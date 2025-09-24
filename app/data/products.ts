@@ -1,0 +1,157 @@
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  sizes: { size: string; price: number }[];
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+};
+
+export const categories: Category[] = [
+  {
+    id: 'muscle-growth',
+    name: 'Muscle Growth & Performance',
+    description: 'Peptides designed to enhance muscle growth, recovery, and athletic performance.'
+  },
+  {
+    id: 'healing-recovery',
+    name: 'Healing & Recovery',
+    description: 'Peptides that support tissue repair, healing, and recovery processes.'
+  },
+  {
+    id: 'anti-aging',
+    name: 'Anti-Aging & Skin',
+    description: 'Peptides that promote skin health, collagen production, and anti-aging effects.'
+  },
+  {
+    id: 'energy-metabolism',
+    name: 'Energy & Metabolism',
+    description: 'Peptides that support metabolic function, energy production, and weight management.'
+  }
+];
+
+export const products: Product[] = [
+  {
+    id: 'reta',
+    name: 'Reta',
+    description: 'A research peptide known for its potential effects on metabolic function and weight management.',
+    price: 79.99,
+    image: '/products/reta.png',
+    category: 'energy-metabolism',
+    sizes: [
+      { size: '5mg', price: 79.99 },
+      { size: '10mg', price: 149.99 }
+    ]
+  },
+  {
+    id: 'triz',
+    name: 'Triz',
+    description: 'A research peptide being studied for its potential effects on glucose metabolism and weight management.',
+    price: 89.99,
+    image: '/products/triz.png',
+    category: 'energy-metabolism',
+    sizes: [
+      { size: '5mg', price: 89.99 },
+      { size: '10mg', price: 169.99 }
+    ]
+  },
+  {
+    id: 'hgh',
+    name: 'HGH',
+    description: 'A research peptide being studied for its potential effects on muscle growth, recovery, and anti-aging properties.',
+    price: 199.99,
+    image: '/products/hgh.png',
+    category: 'muscle-growth',
+    sizes: [
+      { size: '10IU', price: 199.99 }
+    ]
+  },
+  {
+    id: 'tesamorelin',
+    name: 'Tesamorelin',
+    description: 'A research peptide being studied for its potential effects on reducing visceral fat and improving body composition.',
+    price: 99.99,
+    image: '/products/tesamorelin.png',
+    category: 'energy-metabolism',
+    sizes: [
+      { size: '5mg', price: 99.99 },
+      { size: '10mg', price: 189.99 }
+    ]
+  },
+  {
+    id: 'bpc-157-tb-500',
+    name: 'BPC-157 + TB-500',
+    description: 'A research peptide blend being studied for its potential healing and recovery properties.',
+    price: 89.99,
+    image: '/products/bpc-157-tb-500.png',
+    category: 'healing-recovery',
+    sizes: [
+      { size: '5mg', price: 89.99 },
+      { size: '10mg', price: 169.99 }
+    ]
+  },
+  {
+    id: 'ghk',
+    name: 'GHK-Cu',
+    description: 'A research peptide being studied for its potential skin rejuvenation and wound healing properties.',
+    price: 79.99,
+    image: '/products/ghk.png',
+    category: 'anti-aging',
+    sizes: [
+      { size: '75mg', price: 79.99 },
+      { size: '100mg', price: 99.99 }
+    ]
+  },
+  {
+    id: 'mots-c',
+    name: 'MOTS-C',
+    description: 'A research peptide being studied for its potential effects on metabolic function and exercise performance.',
+    price: 89.99,
+    image: '/products/mots-c.png',
+    category: 'energy-metabolism',
+    sizes: [
+      { size: '5mg', price: 89.99 },
+      { size: '10mg', price: 169.99 }
+    ]
+  },
+  {
+    id: 'melanotan-ii',
+    name: 'Melanotan II',
+    description: 'A research peptide being studied for its potential effects on skin pigmentation and tanning.',
+    price: 69.99,
+    image: '/products/melanotan-ii.png',
+    category: 'anti-aging',
+    sizes: [
+      { size: '10mg', price: 69.99 }
+    ]
+  },
+  {
+    id: 'igf-1',
+    name: 'IGF-1 LR3',
+    description: 'A research peptide being studied for its potential effects on muscle growth and recovery.',
+    price: 99.99,
+    image: '/products/igf-1.png',
+    category: 'muscle-growth',
+    sizes: [
+      { size: '1mg', price: 99.99 }
+    ]
+  },
+  {
+    id: 'nad',
+    name: 'NAD+',
+    description: 'A research compound being studied for its potential effects on cellular energy production and anti-aging properties.',
+    price: 129.99,
+    image: '/products/nad.png',
+    category: 'anti-aging',
+    sizes: [
+      { size: '500mg', price: 129.99 }
+    ]
+  }
+];
