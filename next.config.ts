@@ -21,21 +21,10 @@ const nextConfig: NextConfig = {
       }
     ];
   },
-  // Redirect HTTP to HTTPS
+  // Simplified redirect configuration to avoid loops
   async redirects() {
     return [
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'incrediblepeptide.com',
-          }
-        ],
-        permanent: true,
-        destination: 'https://incrediblepeptide.com/:path*',
-      },
-      // Redirect www to non-www
+      // Only redirect www to non-www
       {
         source: '/:path*',
         has: [
