@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { blogs } from './data/blogs';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -129,22 +130,31 @@ export default function Home() {
             
             <div className="bg-black/30 backdrop-blur-sm p-5 md:p-6 rounded-lg">
               <p className="text-base mb-5">
-                Our premium peptides are synthesized with the highest purity standards (98%+) and undergo rigorous quality testing to ensure consistency and efficacy in research applications.
+                Our premium USA-based peptides are synthesized with the highest purity standards (99%+) and undergo rigorous third-party quality testing to ensure consistency and efficacy in research applications.
               </p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
                 <div className="bg-blue-900/40 p-4 rounded-lg">
                   <h3 className="text-lg font-bold mb-2">Research Grade</h3>
-                  <p className="text-sm">All peptides are manufactured in certified facilities with comprehensive documentation and certificates of analysis available for verification.</p>
+                  <p className="text-sm">All peptides are manufactured in certified USA facilities with comprehensive documentation and certificates of analysis available for verification.</p>
                 </div>
                 
                 <div className="bg-blue-900/40 p-4 rounded-lg">
                   <h3 className="text-lg font-bold mb-2">Innovative Formulations</h3>
                   <p className="text-sm">Our catalog includes both established and novel peptide sequences designed for specialized research applications.</p>
                 </div>
+                
+                <div className="bg-blue-900/40 p-4 rounded-lg">
+                  <h3 className="text-lg font-bold mb-2">Quality Verified</h3>
+                  <p className="text-sm">Every product includes detailed purity documentation and third-party test results.</p>
+                  <div className="mt-3">
+                    <a href="#coas" className="inline-block bg-blue-600 text-white text-xs py-1.5 px-3 rounded hover:bg-blue-700 transition-colors">
+                      View COA Documents
+                    </a>
+                  </div>
+                </div>
               </div>
               
-
             </div>
           </div>
         </div>
@@ -353,75 +363,41 @@ export default function Home() {
             Stay informed with the latest peptide research and educational resources.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Research Article 1 */}
-            <div className="bg-gray-800/70 rounded-lg overflow-hidden shadow-lg border border-blue-800/30 hover:border-blue-500/50 transition-all">
-              <div className="h-48 bg-blue-900/30 flex items-center justify-center">
-                <div className="w-12 h-12 text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                  </svg>
+          {/* Display blogs from the imported data */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {blogs.map((blog) => (
+              <div key={blog.id} className="bg-gray-800/70 rounded-lg overflow-hidden shadow-lg border border-blue-800/30 hover:border-blue-500/50 transition-all">
+                <div className="relative w-full aspect-square">
+                  <img 
+                    src={blog.image} 
+                    alt={blog.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-base font-semibold text-white">{blog.title}</h3>
+                    <span className="text-xs text-gray-400">{blog.date}</span>
+                  </div>
+                  <p className="text-gray-300 text-xs mb-3">
+                    {blog.description}
+                  </p>
+                  <a href={blog.url} className="text-blue-400 text-xs hover:text-blue-300 inline-flex items-center">
+                    Read Article
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
                 </div>
               </div>
-              <div className="p-5">
-                <h3 className="text-base font-semibold mb-2 text-white">Understanding Peptide Bioavailability</h3>
-                <p className="text-gray-300 text-xs mb-3">
-                  Explore the factors affecting peptide absorption and utilization in research models.
-                </p>
-                <a href="#" className="text-blue-400 text-xs hover:text-blue-300 inline-flex items-center">
-                  Read Article
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-            
-            {/* Research Article 2 */}
-            <div className="bg-gray-800/70 rounded-lg overflow-hidden shadow-lg border border-blue-800/30 hover:border-blue-500/50 transition-all">
-              <div className="h-48 bg-blue-900/30 flex items-center justify-center">
-                <div className="w-12 h-12 text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="text-base font-semibold mb-2 text-white">Peptide Storage Best Practices</h3>
-                <p className="text-gray-300 text-xs mb-3">
-                  Learn optimal storage conditions to maintain peptide stability and integrity for research.
-                </p>
-                <a href="#" className="text-blue-400 text-xs hover:text-blue-300 inline-flex items-center">
-                  Read Article
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-            
-            {/* Research Article 3 */}
-            <div className="bg-gray-800/70 rounded-lg overflow-hidden shadow-lg border border-blue-800/30 hover:border-blue-500/50 transition-all">
-              <div className="h-48 bg-blue-900/30 flex items-center justify-center">
-                <div className="w-12 h-12 text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="text-base font-semibold mb-2 text-white">Recent Advances in Peptide Research</h3>
-                <p className="text-gray-300 text-xs mb-3">
-                  Stay updated on the latest scientific discoveries and applications in peptide science.
-                </p>
-                <a href="#" className="text-blue-400 text-xs hover:text-blue-300 inline-flex items-center">
-                  Read Article
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
+            ))}
+          </div>
+          
+          {/* All Blogs Button */}
+          <div className="mt-10 text-center">
+            <Link href="/blogs" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
+              View All Blogs
+            </Link>
           </div>
           
           <div className="text-center mt-12">
