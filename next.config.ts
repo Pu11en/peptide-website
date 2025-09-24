@@ -7,6 +7,21 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/(.*)',
+        has: [
+          {
+            type: 'host',
+            value: 'incrediblepeptide.com',
+          },
+        ],
+        permanent: true,
+        destination: 'https://incrediblepeptide.com/:path*',
+      },
+    ]
+  },
 }
 
 export default nextConfig
