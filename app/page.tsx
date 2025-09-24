@@ -86,7 +86,7 @@ export default function Home() {
           <div className="flex-1"></div>
           
           {/* Scroll Down Indicator */}
-          <div className="animate-bounce mb-16">
+          <div className="animate-bounce mb-28">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               className="h-8 w-8" 
