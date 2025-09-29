@@ -1,47 +1,66 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import '@n8n/chat/style.css';
 import { createChat } from '@n8n/chat';
 
 export default function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const webhookUrl = 'https://drewp.app.n8n.cloud/webhook/d7c18d21-1aba-4915-b3ef-d75a994b0c46/chat';
+  const chatInstanceRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      // Create the chat instance when the component is opened
-      const chatInstance = createChat({
-        webhookUrl: webhookUrl,
-        mode: 'window',
-        target: '#n8n-chat-container',
-        initialMessages: [
-          "Hello! I'm Dr. Incredible AI. How can I help you today with peptide information?"
-        ],
-        i18n: {
-          en: {
-            title: 'Dr. Incredible AI',
-            subtitle: 'Your peptide information assistant',
-            inputPlaceholder: 'Ask about peptides...',
-            getStarted: 'New Conversation',
-            footer: 'Incredible Peptides © 2023'
-          }
-        },
-        metadata: {
-          // You can add any custom metadata here that you want to send with each request
-          source: 'website'
-        },
-        enableStreaming: true,
-      });
+      // Only create the chat instance if it doesn't exist yet
+      if (!chatInstanceRef.current && containerRef.current) {
+        // Create a div element for the chat
+        const chatDiv = document.createElement('div');
+        chatDiv.id = 'n8n-chat-container';
+        containerRef.current.appendChild(chatDiv);
 
-      // Clean up function to remove the chat when component unmounts or closes
-      return () => {
-        // Check if there's a chat container and remove it
-        const chatContainer = document.querySelector('#n8n-chat');
+        // Create the chat instance
+        chatInstanceRef.current = createChat({
+          webhookUrl: webhookUrl,
+          target: '#n8n-chat-container',
+          mode: 'fullscreen', // Use fullscreen mode for our container
+          loadPreviousSession: true,
+          chatInputKey: 'chatInput',
+          chatSessionKey: 'sessionId',
+          initialMessages: [
+            "Hello! I'm Dr. Incredible AI. How can I help you today with peptide information?"
+          ],
+          i18n: {
+            en: {
+              title: 'Dr. Incredible AI',
+              subtitle: 'Your peptide information assistant',
+              inputPlaceholder: 'Ask about peptides...',
+              getStarted: 'New Conversation',
+              footer: 'Incredible Peptides © 2023'
+            }
+          },
+          metadata: {
+            source: 'website'
+          },
+          enableStreaming: true,
+          webhookConfig: {
+            method: 'POST',
+            headers: {}
+          }
+        });
+      }
+    }
+
+    // Clean up function
+    return () => {
+      if (chatInstanceRef.current && !isOpen) {
+        // Remove the chat instance when component unmounts or closes
+        const chatContainer = document.querySelector('#n8n-chat-container');
         if (chatContainer) {
           chatContainer.remove();
         }
-      };
-    }
+        chatInstanceRef.current = null;
+      }
+    };
   }, [isOpen, webhookUrl]);
 
   if (!isOpen) return null;
@@ -60,7 +79,7 @@ export default function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose:
         </button>
         
         {/* Chat container */}
-        <div id="n8n-chat-container" className="w-full h-full"></div>
+        <div ref={containerRef} className="w-full h-full"></div>
       </div>
     </div>
   );
