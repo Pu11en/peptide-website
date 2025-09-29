@@ -1,29 +1,29 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import '@n8n/chat/style.css';
 import { createChat } from '@n8n/chat';
 
 export default function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const webhookUrl = 'https://drewp.app.n8n.cloud/webhook/d7c18d21-1aba-4915-b3ef-d75a994b0c46/chat';
+  const chatInstanceRef = useRef<any>(null);
 
   useEffect(() => {
-    // Only create the chat when component mounts and is open
-    if (isOpen) {
-      // Create a container div for the chat if it doesn't exist
-      let chatContainer = document.getElementById('n8n-chat');
-      if (!chatContainer) {
-        chatContainer = document.createElement('div');
-        chatContainer.id = 'n8n-chat';
-        document.body.appendChild(chatContainer);
-      }
+    // Create a container div for the chat if it doesn't exist
+    let chatContainer = document.getElementById('n8n-chat');
+    if (!chatContainer) {
+      chatContainer = document.createElement('div');
+      chatContainer.id = 'n8n-chat';
+      document.body.appendChild(chatContainer);
+    }
 
-      // Create the chat instance
-      const chatInstance = createChat({
+    // Create the chat instance only once
+    if (!chatInstanceRef.current) {
+      chatInstanceRef.current = createChat({
         webhookUrl: webhookUrl,
-        // Use default target which is '#n8n-chat'
-        mode: 'window', // Use window mode as per documentation default
-        loadPreviousSession: false, // Disable loading previous session to avoid fetch errors
+        target: '#n8n-chat',
+        mode: 'window', 
+        loadPreviousSession: false,
         initialMessages: [
           "Hello! I'm Dr. Incredible AI. How can I help you today with peptide information?"
         ],
@@ -39,18 +39,26 @@ export default function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose:
         metadata: {
           source: 'website'
         },
-        enableStreaming: true
+        enableStreaming: true,
+        showInitialMessages: true
       });
-
-      // Clean up function
-      return () => {
-        // Only remove the chat container when closing
-        const chatElement = document.getElementById('n8n-chat');
-        if (chatElement) {
-          chatElement.remove();
-        }
-      };
     }
+
+    // Open or close the chat based on isOpen state
+    if (isOpen && chatInstanceRef.current) {
+      chatInstanceRef.current.open();
+    } else if (!isOpen && chatInstanceRef.current) {
+      chatInstanceRef.current.close();
+    }
+
+    // Clean up function
+    return () => {
+      // We don't destroy the chat instance on unmount anymore
+      // Just close it if it's open
+      if (chatInstanceRef.current && isOpen) {
+        chatInstanceRef.current.close();
+      }
+    };
   }, [isOpen, webhookUrl]);
 
   // If chat is not open, don't show the backdrop
