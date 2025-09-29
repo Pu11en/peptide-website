@@ -23,7 +23,7 @@ export default function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose:
         webhookUrl: webhookUrl,
         // Use default target which is '#n8n-chat'
         mode: 'window', // Use window mode as per documentation default
-        loadPreviousSession: true,
+        loadPreviousSession: false, // Disable loading previous session to avoid fetch errors
         initialMessages: [
           "Hello! I'm Dr. Incredible AI. How can I help you today with peptide information?"
         ],
@@ -53,11 +53,11 @@ export default function Chatbot({ isOpen, onClose }: { isOpen: boolean; onClose:
     }
   }, [isOpen, webhookUrl]);
 
-  // We don't need to render anything as the chat is appended to body
+  // If chat is not open, don't show the backdrop
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
       {/* This is just a backdrop/overlay that closes the chat when clicked */}
     </div>
   );
