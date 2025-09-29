@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { blogs } from './data/blogs';
+import ChatbotButton from './components/ChatbotButton';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,17 +17,25 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* Removed the dark overlay to make video brighter */}
+        {/* Desktop Hero Image - Only visible on desktop */}
+        <div className="absolute inset-0 w-full h-full hidden md:block">
+          <img 
+            src="https://res.cloudinary.com/dmdjagtkx/image/upload/v1759062155/defipullen_website_lighting_hero_--ar_21_--oref_httpss.mj.run_2220e69d-abbe-4745-bdc6-e3620788d579_3_2_yz6yoy.png" 
+            alt="Incredible Peptides - Lightning Energy" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
+        {/* Video Background - Only visible on mobile */}
+        <div className="absolute inset-0 w-full h-full md:hidden">
           <video 
             className="w-full h-full object-cover"
             autoPlay 
             loop 
             muted 
             playsInline
+            src="/hero-video.mp4"
           >
-            <source src="/hero-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -114,7 +123,7 @@ export default function Home() {
       </section>
       
       {/* Peptide Information Section with Lightning Background */}
-      <section className="relative py-12 font-roboto" style={{ fontFamily: "var(--font-roboto)" }}>
+      <section id="peptides" className="relative py-12 font-roboto" style={{ fontFamily: "var(--font-roboto)" }}>
         {/* Lightning Background */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -168,12 +177,8 @@ export default function Home() {
           
           <div className="flex flex-col items-center mb-12">
             <div className="w-full max-w-xs mb-8">
-              <Link
-                href="#ask-ai"
-                className="rounded-md bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 text-lg transition-colors w-full text-center flex items-center justify-center"
-              >
-                <span>➡️ Ask the Bot</span>
-              </Link>
+              {/* Replaced Link with ChatbotButton component */}
+              <ChatbotButton />
             </div>
           </div>
           
@@ -437,7 +442,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 text-xs">
-                "The purity of these peptides is exceptional. Our research has benefited greatly from the consistency and quality of the products."
+                &quot;The purity of these peptides is exceptional. Our research has benefited greatly from the consistency and quality of the products.&quot;
               </p>
             </div>
             
@@ -458,7 +463,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 text-xs">
-                "Fast shipping and excellent customer service. The detailed COAs provided with each product give us confidence in our research protocols."
+                &quot;Fast shipping and excellent customer service. The detailed COAs provided with each product give us confidence in our research protocols.&quot;
               </p>
             </div>
             
@@ -479,7 +484,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 text-xs">
-                "We've been using these peptides for over two years in our studies. The consistency between batches has been remarkable, which is crucial for our longitudinal research."
+                &quot;We&apos;ve been using these peptides for over two years in our studies. The consistency between batches has been remarkable, which is crucial for our longitudinal research.&quot;
               </p>
             </div>
           </div>
@@ -503,7 +508,7 @@ export default function Home() {
       </section>
       
       {/* Educational Peptide Section */}
-      <section id="peptides" className="py-20 bg-gray-50">
+      <section id="products" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Understanding Peptides</h2>
           <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-sm">
@@ -529,7 +534,7 @@ export default function Home() {
             
             {/* Peptides vs. Proteins */}
             <div className="mb-12">
-              <h3 className="text-2xl font-semibold mb-4 text-gray-900">Peptides vs. Proteins: What's the Difference?</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900">Peptides vs. Proteins: What&apos;s the Difference?</h3>
               <p className="text-sm text-gray-700 mb-4">
                 While both peptides and proteins are made of amino acids, the key difference lies in their size and complexity. Peptides are shorter chains (2–50 amino acids), whereas proteins are longer and often fold into complex three-dimensional structures. This distinction affects their biological functions and how they are used in research and medicine.
               </p>
@@ -578,7 +583,7 @@ export default function Home() {
             <div className="mb-12">
               <h3 className="text-2xl font-semibold mb-4 text-gray-900">FDA-Approved vs. Experimental Peptides</h3>
               <p className="text-sm text-gray-700 mb-4">
-                The FDA has approved certain peptides for specific medical uses, such as insulin analogs for diabetes and glucagon-like peptide-1 (GLP-1) agonists for metabolic disorders. However, many peptides available online are considered experimental and are not approved for human use outside of research settings. It's crucial to distinguish between regulated, prescription peptides and those intended solely for laboratory research.
+                The FDA has approved certain peptides for specific medical uses, such as insulin analogs for diabetes and glucagon-like peptide-1 (GLP-1) agonists for metabolic disorders. However, many peptides available online are considered experimental and are not approved for human use outside of research settings. It&apos;s crucial to distinguish between regulated, prescription peptides and those intended solely for laboratory research.
               </p>
             </div>
             
@@ -633,7 +638,7 @@ export default function Home() {
               </div>
               <div className="px-6 py-4">
                 <p className="text-xs text-gray-700">
-                  Only FDA-approved peptides are legal for human use with a prescription. Other peptides are sold for research purposes only and are not intended for human consumption. Always ensure you're purchasing from reputable suppliers who comply with all regulatory requirements.
+                  Only FDA-approved peptides are legal for human use with a prescription. Other peptides are sold for research purposes only and are not intended for human consumption. Always ensure you&apos;re purchasing from reputable suppliers who comply with all regulatory requirements.
                 </p>
               </div>
             </div>

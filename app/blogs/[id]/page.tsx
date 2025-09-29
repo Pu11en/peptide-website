@@ -18,7 +18,7 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-blue-900 w-full" style={{position: 'absolute', minHeight: '100%'}}>
+    <div className="bg-gradient-to-b from-gray-900 to-blue-900 w-full min-h-screen">
       {/* Home Button - Fixed at top left */}
       <div className="fixed top-4 left-4 z-50">
         <Link href="/" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors shadow-lg">
@@ -41,14 +41,14 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
           
           {/* Blog Header */}
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{blog.title}</h1>
-            <div className="flex items-center text-gray-400 text-sm mb-6">
+            <h1 className="text-5xl font-bold text-white mb-4 text-center">{blog.title}</h1>
+            <div className="flex items-center text-gray-400 text-sm mb-6 justify-center">
               <span>{blog.date}</span>
             </div>
           </div>
           
           {/* Featured Image */}
-          <div className="mb-8 rounded-lg overflow-hidden">
+          <div className="mb-8 rounded-lg overflow-hidden shadow-xl">
             <img 
               src={blog.image} 
               alt={blog.title} 
@@ -61,7 +61,7 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
           </div>
           
           {/* Blog Content */}
-          <div className="prose prose-lg prose-invert max-w-none">
+          <div className="prose prose-lg prose-invert max-w-none bg-white bg-opacity-10 backdrop-blur-lg rounded-xl p-8 shadow-xl leading-relaxed">
             {blog.content ? (
               <div dangerouslySetInnerHTML={{ __html: blog.content }} />
             ) : (
