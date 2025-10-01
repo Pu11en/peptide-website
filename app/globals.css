@@ -50,3 +50,5 @@ body {
 .border-primary {
   border-color: var(--primary);
 }
+/* Smooth anchor scrolling */
+html { scroll-behavior: smooth; }

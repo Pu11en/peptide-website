@@ -14,12 +14,10 @@ export default function CheckoutCartButton({
   className = '',
   customer,
   shippingCents = 1000,
-  requireCustomer = false,
 }: {
   className?: string
   customer?: Customer
   shippingCents?: number
-  requireCustomer?: boolean
 }) {
   const { items } = useCart()
   const [loading, setLoading] = useState(false)
@@ -56,7 +54,7 @@ export default function CheckoutCartButton({
 
   return (
     <button
-      disabled={items.length === 0 || loading || (requireCustomer && !customer)}
+      disabled={items.length === 0 || loading}
       onClick={handleCheckout}
       className={className || 'bg-blue-600 hover:bg-blue-700 text-white rounded py-2 px-4 disabled:opacity-50'}
     >

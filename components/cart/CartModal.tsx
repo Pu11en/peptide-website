@@ -117,7 +117,6 @@ export default function CartModal() {
                 className="w-full bg-green-600 hover:bg-green-700 text-white rounded py-2 disabled:opacity-50"
                 customer={formValid ? customer : undefined}
                 shippingCents={shippingCents}
-                requireCustomer={true}
               />
             </div>
           </>

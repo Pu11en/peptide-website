@@ -43,7 +43,7 @@ export const products: Product[] = [
     name: 'Reta',
     description: 'A research peptide known for its potential effects on metabolic function and weight management.',
     price: 100,
-    image: '/products/reta 10mg bottle.png',
+    image: '/products/reta.png',
     category: 'energy-metabolism',
     sizes: [
       { size: '10mg', price: 100 },
@@ -55,7 +55,7 @@ export const products: Product[] = [
     name: 'Triz',
     description: 'A research peptide being studied for its potential effects on glucose metabolism and weight management.',
     price: 90,
-    image: '/products/Tirzepatide 10mg bottle.png',
+    image: '/products/triz.png',
     category: 'energy-metabolism',
     sizes: [
       { size: '10mg', price: 90 },
@@ -67,7 +67,7 @@ export const products: Product[] = [
     name: 'HGH',
     description: 'A research peptide being studied for its potential effects on muscle growth, recovery, and anti-aging properties.',
     price: 199.99,
-    image: '/products/incred plain label.png',
+    image: '/products/hgh.png',
     category: 'muscle-growth',
     sizes: [
       { size: '10IU', price: 199.99 }
@@ -78,7 +78,7 @@ export const products: Product[] = [
     name: 'Tesamorelin',
     description: 'A research peptide being studied for its potential effects on reducing visceral fat and improving body composition.',
     price: 70,
-    image: '/products/tesamorlin 10mg bottle.png',
+    image: '/products/tesamorelin.png',
     category: 'energy-metabolism',
     sizes: [
       { size: '5mg', price: 70 },
@@ -90,7 +90,7 @@ export const products: Product[] = [
     name: 'BPC-157 + TB-500',
     description: 'A research peptide blend being studied for its potential healing and recovery properties.',
     price: 100,
-    image: '/products/bpc 157 tb500 10mg.png',
+    image: '/products/bpc-157-tb-500.png',
     category: 'healing-recovery',
     sizes: [
       { size: '10mg', price: 100 },
@@ -102,7 +102,7 @@ export const products: Product[] = [
     name: 'GHK-Cu',
     description: 'A research peptide being studied for its potential skin rejuvenation and wound healing properties.',
     price: 50,
-    image: '/products/ghk cu 100mg bottle.png',
+    image: '/products/ghk.png',
     category: 'anti-aging',
     sizes: [
       { size: '50mg', price: 50 }
@@ -113,7 +113,7 @@ export const products: Product[] = [
     name: 'MOTS-C',
     description: 'A research peptide being studied for its potential effects on metabolic function and exercise performance.',
     price: 70,
-    image: '/products/Mots c 10mg bottle.png',
+    image: '/products/mots-c.png',
     category: 'energy-metabolism',
     sizes: [
       { size: '10mg', price: 70 }
@@ -124,7 +124,7 @@ export const products: Product[] = [
     name: 'Melanotan II',
     description: 'A research peptide being studied for its potential effects on skin pigmentation and tanning.',
     price: 40,
-    image: '/products/Melanotan II 10mg bottle.png',
+    image: '/products/melanotan-ii.png',
     category: 'anti-aging',
     sizes: [
       { size: '10mg', price: 40 }
@@ -135,7 +135,7 @@ export const products: Product[] = [
     name: 'IGF-1 LR3',
     description: 'A research peptide being studied for its potential effects on muscle growth and recovery.',
     price: 60,
-    image: '/products/IGF1 lr3 1mg bottle.png',
+    image: '/products/igf-1.png',
     category: 'muscle-growth',
     sizes: [
       { size: '1mg', price: 60 }
@@ -146,7 +146,7 @@ export const products: Product[] = [
     name: 'NAD+',
     description: 'A research compound being studied for its potential effects on cellular energy production and anti-aging properties.',
     price: 30,
-    image: '/products/NAD+ 500mg bottle.png',
+    image: '/products/nad.png',
     category: 'anti-aging',
     sizes: [
       { size: '100mg', price: 30 }

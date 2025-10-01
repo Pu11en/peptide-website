@@ -15,6 +15,27 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const { addItem, openCart } = useCart();
   const productMap = new Map(productList.map((p) => [p.id, p]));
+  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {}
+    productList.forEach((p) => {
+      initial[p.id] = p.sizes[0]?.size ?? ''
+    })
+    return initial
+  })
+
+  const priceFor = (id: string, size?: string) => {
+    const p = productMap.get(id)
+    if (!p) return 0
+    if (size) {
+      const found = p.sizes.find((s) => s.size === size)
+      if (found) return found.price
+    }
+    return p.price
+  }
+
+  const setSize = (id: string, size: string) => {
+    setSelectedSizes((prev) => ({ ...prev, [id]: size }))
+  }
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -88,6 +109,11 @@ export default function Home() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="#education" className="text-2xl font-medium hover:text-blue-400 transition-colors" onClick={() => setIsMenuOpen(false)}>
+                    Education
+                  </Link>
+                </li>
+                <li>
                   <Link href="#peptides" className="text-2xl font-medium hover:text-blue-400 transition-colors" onClick={() => setIsMenuOpen(false)}>
                     Peptides
                   </Link>
@@ -144,7 +170,7 @@ export default function Home() {
       </section>
       
       {/* Peptide Information Section with Lightning Background */}
-      <section id="peptides" className="relative py-12 font-roboto" style={{ fontFamily: "var(--font-roboto)" }}>
+      <section id="peptides" className="relative py-12 font-roboto scroll-mt-24" style={{ fontFamily: "var(--font-roboto)" }}>
         {/* Lightning Background */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -191,7 +217,7 @@ export default function Home() {
       </section>
       
       {/* Products Section */}
-  <section id="products" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+  <section id="products" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white scroll-mt-24">
     <div className="container mx-auto px-4">
       <h2 className="text-3xl font-bold text-center mb-4">Products</h2>
       <p className="text-center text-gray-300 mb-3 max-w-2xl mx-auto">Browse our research-only peptide products. Not for human consumption.</p>
@@ -206,7 +232,7 @@ export default function Home() {
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/bpc-157-tb-500">
                   <Image
-                    src="/products/bpc 157 tb500 10mg.png"
+                    src="/products/bpc-157-tb500-10mg.png"
                     alt="BPC-157 & TB-500 Blend"
                     fill
                     className="object-contain"
@@ -224,15 +250,27 @@ export default function Home() {
                 </div>
                 <p className="text-gray-400 text-xs mb-3">Premium blend for enhanced tissue repair and recovery research.</p>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">$89.99</p>
-                  <span className="text-xs text-gray-400">10mg</span>
+                  <p className="text-blue-400 font-bold text-sm">${priceFor('bpc-157-tb-500', selectedSizes['bpc-157-tb-500']).toFixed(2)}</p>
+                  <span className="text-xs text-gray-400">{selectedSizes['bpc-157-tb-500']}</span>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-xs text-gray-300 mb-1">Size</label>
+                  <select
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
+                    value={selectedSizes['bpc-157-tb-500']}
+                    onChange={(e) => setSize('bpc-157-tb-500', e.target.value)}
+                  >
+                    {productMap.get('bpc-157-tb-500')?.sizes.map((s) => (
+                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
                   onClick={() => {
                     const p = productMap.get('bpc-157-tb-500')
-                    const size = '10mg'
-                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    const size = selectedSizes['bpc-157-tb-500']
+                    const price = priceFor('bpc-157-tb-500', size)
                     addItem({ slug: 'bpc-157-tb-500', name: p?.name || 'BPC-157 & TB-500', size, price, image: p?.image, quantity: 1 })
                     openCart()
                   }}
@@ -240,13 +278,13 @@ export default function Home() {
                 {/* Repeat the openCart() call after addItem for each product card's button */}
               </div>
             </div>
-            
+
             {/* GHK-Cu */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/ghk">
                   <Image
-                    src="/products/ghk cu 100mg bottle.png"
+                    src="/products/ghk-cu-100mg-bottle.png"
                     alt="GHK-Cu Peptide"
                     fill
                     className="object-contain"
@@ -264,28 +302,40 @@ export default function Home() {
                 </div>
                 <p className="text-gray-400 text-xs mb-3">Copper peptide complex for skin rejuvenation research applications.</p>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">$119.99</p>
-                  <span className="text-xs text-gray-400">100mg</span>
+                  <p className="text-blue-400 font-bold text-sm">${priceFor('ghk', selectedSizes['ghk']).toFixed(2)}</p>
+                  <span className="text-xs text-gray-400">{selectedSizes['ghk']}</span>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-xs text-gray-300 mb-1">Size</label>
+                  <select
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
+                    value={selectedSizes['ghk']}
+                    onChange={(e) => setSize('ghk', e.target.value)}
+                  >
+                    {productMap.get('ghk')?.sizes.map((s) => (
+                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
                   onClick={() => {
                     const p = productMap.get('ghk')
-                    const size = '100mg'
-                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    const size = selectedSizes['ghk']
+                    const price = priceFor('ghk', size)
                     addItem({ slug: 'ghk', name: p?.name || 'GHK-Cu', size, price, image: p?.image, quantity: 1 })
                     openCart()
                   }}
                 >Add to Cart</button>
               </div>
             </div>
-            
+
             {/* Tirzepatide */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/triz">
                   <Image
-                    src="/products/Tirzepatide 10mg bottle.png"
+                    src="/products/tirzepatide-10mg-bottle.png"
                     alt="Tirzepatide Peptide"
                     fill
                     className="object-contain"
@@ -303,28 +353,40 @@ export default function Home() {
                 </div>
                 <p className="text-gray-400 text-xs mb-3">Dual GIP and GLP-1 receptor agonist for metabolic research.</p>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">$149.99</p>
-                  <span className="text-xs text-gray-400">10mg</span>
+                  <p className="text-blue-400 font-bold text-sm">${priceFor('triz', selectedSizes['triz']).toFixed(2)}</p>
+                  <span className="text-xs text-gray-400">{selectedSizes['triz']}</span>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-xs text-gray-300 mb-1">Size</label>
+                  <select
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
+                    value={selectedSizes['triz']}
+                    onChange={(e) => setSize('triz', e.target.value)}
+                  >
+                    {productMap.get('triz')?.sizes.map((s) => (
+                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
                   onClick={() => {
                     const p = productMap.get('triz')
-                    const size = '10mg'
-                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    const size = selectedSizes['triz']
+                    const price = priceFor('triz', size)
                     addItem({ slug: 'triz', name: p?.name || 'Tirzepatide', size, price, image: p?.image, quantity: 1 })
                     openCart()
                   }}
                 >Add to Cart</button>
               </div>
             </div>
-            
+
             {/* MOTS-c */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/mots-c">
                   <Image
-                    src="/products/Mots c 10mg bottle.png"
+                    src="/products/mots-c-10mg-bottle.png"
                     alt="MOTS-c Peptide"
                     fill
                     className="object-contain"
@@ -342,15 +404,27 @@ export default function Home() {
                 </div>
                 <p className="text-gray-400 text-xs mb-3">Mitochondrial-derived peptide for metabolic function research.</p>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">$109.99</p>
-                  <span className="text-xs text-gray-400">10mg</span>
+                  <p className="text-blue-400 font-bold text-sm">${priceFor('mots-c', selectedSizes['mots-c']).toFixed(2)}</p>
+                  <span className="text-xs text-gray-400">{selectedSizes['mots-c']}</span>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-xs text-gray-300 mb-1">Size</label>
+                  <select
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
+                    value={selectedSizes['mots-c']}
+                    onChange={(e) => setSize('mots-c', e.target.value)}
+                  >
+                    {productMap.get('mots-c')?.sizes.map((s) => (
+                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
                   onClick={() => {
                     const p = productMap.get('mots-c')
-                    const size = '10mg'
-                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    const size = selectedSizes['mots-c']
+                    const price = priceFor('mots-c', size)
                     addItem({ slug: 'mots-c', name: p?.name || 'MOTS-c', size, price, image: p?.image, quantity: 1 })
                     openCart()
                   }}
@@ -359,13 +433,13 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            
+
             {/* Melanotan II */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/melanotan-ii">
                   <Image
-                    src="/products/Melanotan II 10mg bottle.png"
+                    src="/products/melanotan-ii-10mg-bottle.png"
                     alt="Melanotan II Peptide"
                     fill
                     className="object-contain"
@@ -383,28 +457,40 @@ export default function Home() {
                 </div>
                 <p className="text-gray-400 text-xs mb-3">Synthetic analog of alpha-melanocyte stimulating hormone for research.</p>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">$79.99</p>
-                  <span className="text-xs text-gray-400">10mg</span>
+                  <p className="text-blue-400 font-bold text-sm">${priceFor('melanotan-ii', selectedSizes['melanotan-ii']).toFixed(2)}</p>
+                  <span className="text-xs text-gray-400">{selectedSizes['melanotan-ii']}</span>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-xs text-gray-300 mb-1">Size</label>
+                  <select
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
+                    value={selectedSizes['melanotan-ii']}
+                    onChange={(e) => setSize('melanotan-ii', e.target.value)}
+                  >
+                    {productMap.get('melanotan-ii')?.sizes.map((s) => (
+                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
                   onClick={() => {
                     const p = productMap.get('melanotan-ii')
-                    const size = '10mg'
-                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    const size = selectedSizes['melanotan-ii']
+                    const price = priceFor('melanotan-ii', size)
                     addItem({ slug: 'melanotan-ii', name: p?.name || 'Melanotan II', size, price, image: p?.image, quantity: 1 })
                     openCart()
                   }}
                 >Add to Cart</button>
               </div>
             </div>
-            
+
             {/* NAD+ */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/nad">
                   <Image
-                    src="/products/NAD+ 500mg bottle.png"
+                    src="/products/nad-plus-500mg-bottle.png"
                     alt="NAD+ Supplement"
                     fill
                     className="object-contain"
@@ -422,15 +508,27 @@ export default function Home() {
                 </div>
                 <p className="text-gray-400 text-xs mb-3">Nicotinamide adenine dinucleotide for cellular energy research.</p>
                 <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">$199.99</p>
-                  <span className="text-xs text-gray-400">500mg</span>
+                  <p className="text-blue-400 font-bold text-sm">${priceFor('nad', selectedSizes['nad']).toFixed(2)}</p>
+                  <span className="text-xs text-gray-400">{selectedSizes['nad']}</span>
+                </div>
+                <div className="mb-3">
+                  <label className="block text-xs text-gray-300 mb-1">Size</label>
+                  <select
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
+                    value={selectedSizes['nad']}
+                    onChange={(e) => setSize('nad', e.target.value)}
+                  >
+                    {productMap.get('nad')?.sizes.map((s) => (
+                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
+                    ))}
+                  </select>
                 </div>
                 <button
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
                   onClick={() => {
                     const p = productMap.get('nad')
-                    const size = '500mg'
-                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    const size = selectedSizes['nad']
+                    const price = priceFor('nad', size)
                     addItem({ slug: 'nad', name: p?.name || 'NAD+', size, price, image: p?.image, quantity: 1 })
                     openCart()
                   }}
@@ -473,7 +571,7 @@ export default function Home() {
                   <p className="text-gray-300 text-xs mb-3">
                     {blog.description}
                   </p>
-                  <a href={blog.url} className="text-blue-400 text-xs hover:text-blue-300 inline-flex items-center">
+            <a href={blog.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs hover:text-blue-300 inline-flex items-center">
                     Read Article
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -578,7 +676,7 @@ export default function Home() {
       </section>
       
       {/* COAs Section */}
-      <section id="coas" className="py-20 bg-gray-100">
+      <section id="coas" className="py-20 bg-gray-100 scroll-mt-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Certificates of Analysis</h2>
           <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8 text-sm">
@@ -593,7 +691,7 @@ export default function Home() {
       </section>
       
       {/* Educational Peptide Section */}
-      <section id="products" className="py-20 bg-gray-50">
+      <section id="education" className="py-20 bg-gray-50 scroll-mt-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Understanding Peptides</h2>
           <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-sm">
@@ -684,7 +782,7 @@ export default function Home() {
       </section>
       
       {/* FAQ Section */}
-      <section id="faq" className="py-20 bg-white">
+      <section id="faq" className="py-20 bg-white scroll-mt-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Frequently Asked Questions</h2>
           <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12 text-sm">
@@ -754,9 +852,22 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
+      {/* About Section */}
+      <section id="about" className="py-20 bg-gray-900 text-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-6">About Us</h2>
+          <p className="max-w-3xl mx-auto text-center text-white/80 text-sm">
+            Incredible Peptides provides research-only peptides with third-party COAs, rigorous quality controls,
+            and fast fulfillment from USA facilities. Our products are intended strictly for laboratory research and
+            are not for human consumption. If you have questions about documentation or fulfillment, reach out via
+            the contact form below.
+          </p>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
+      <section id="contact" className="py-20 bg-gray-50 scroll-mt-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Contact Us</h2>
           <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8 text-sm">
