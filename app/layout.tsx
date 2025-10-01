@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Roboto } from 'next/font/google';
 import "./globals.css";
 import { Providers } from "./providers";
-import FloatingChatButton from "./components/FloatingChatButton";
+import { Analytics } from '@vercel/analytics/react'
 
 // Initialize the Montserrat font with specific subsets and weights
 const montserrat = Montserrat({
@@ -37,8 +37,8 @@ export default function RootLayout({
       >
         <Providers>
           {children}
-          <FloatingChatButton />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

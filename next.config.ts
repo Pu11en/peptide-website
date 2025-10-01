@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  images: {
+    domains: ['images.unsplash.com', 'res.cloudinary.com'],
+  },
   // Headers configuration - disabled for local development
   async headers() {
     // Only apply security headers in production

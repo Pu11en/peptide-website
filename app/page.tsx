@@ -4,10 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { blogs } from './data/blogs';
-import ChatbotButton from './components/ChatbotButton';
+import { products as productList } from './data/products';
+import { useCart } from '../components/cart/CartContext';
+import CartIconButton from '../components/cart/CartIconButton';
+import CheckoutCartButton from '../components/cart/CheckoutCartButton';
+// Chatbot removed
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { addItem } = useCart();
+  const productMap = new Map(productList.map((p) => [p.id, p]));
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,27 +24,23 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Desktop Hero Image - Only visible on desktop */}
-        <div className="absolute inset-0 w-full h-full hidden md:block">
-          <img 
-            src="https://res.cloudinary.com/dmdjagtkx/image/upload/v1759062155/defipullen_website_lighting_hero_--ar_21_--oref_httpss.mj.run_2220e69d-abbe-4745-bdc6-e3620788d579_3_2_yz6yoy.png" 
-            alt="Incredible Peptides - Lightning Energy" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <img
+          src="https://res.cloudinary.com/dmdjagtkx/image/upload/v1759062155/defipullen_website_lighting_hero_--ar_21_--oref_httpss.mj.run_2220e69d-abbe-4745-bdc6-e3620788d579_3_2_yz6yoy.png"
+          alt="Incredible Peptides - Lightning Energy"
+          className="absolute inset-0 w-full h-full object-cover hidden md:block"
+        />
         
-        {/* Video Background - Only visible on mobile */}
-        <div className="absolute inset-0 w-full h-full md:hidden">
-          <video 
-            className="w-full h-full object-cover"
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            src="/hero-video.mp4"
-          >
-            Your browser does not support the video tag.
-          </video>
-        </div>
+        {/* Mobile Hero Video */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover md:hidden"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
         
         {/* 3 Lines Menu Button in Top Right Corner */}
         <button 
@@ -169,32 +171,34 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Dr. Incredible AI Section */}
-      <section id="ai-assistant" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">Dr. Incredible AI</h2>
-          <p className="text-center text-gray-300 mb-12 max-w-2xl mx-auto">An AI assistant built on verified peptide research. Dr. Incredible AI gives you clear, step-by-step explanations so you can understand what each peptide does before you decide.</p>
-          
-          <div className="flex flex-col items-center mb-12">
-            <div className="w-full max-w-xs mb-8">
-              {/* Replaced Link with ChatbotButton component */}
-              <ChatbotButton />
-            </div>
-          </div>
+      {/* Products Section */}
+  <section id="products" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <div className="container mx-auto px-4">
+      <h2 className="text-3xl font-bold text-center mb-4">Products</h2>
+      <p className="text-center text-gray-300 mb-3 max-w-2xl mx-auto">Browse our research-only peptide products. Not for human consumption.</p>
+      {/* Section actions: Checkout */}
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <CheckoutCartButton className="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2" />
+      </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* BPC-157 & TB-500 */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="h-64 bg-gray-900 flex items-center justify-center p-4">
-                <img 
-                  src="/products/bpc 157 tb500 10mg.png" 
-                  alt="BPC-157 & TB-500 Blend" 
-                  className="h-full object-contain"
-                />
+              <div className="relative h-64 bg-gray-900 p-4">
+                <Link href="/products/bpc-157-tb-500">
+                  <Image
+                    src="/products/bpc 157 tb500 10mg.png"
+                    alt="BPC-157 & TB-500 Blend"
+                    fill
+                    className="object-contain"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    priority={false}
+                  />
+                </Link>
               </div>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
-                  <h3 className="text-base font-semibold whitespace-nowrap">BPC-157 & TB-500</h3>
+                  <Link href="/products/bpc-157-tb-500" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">BPC-157 & TB-500</Link>
                   <div className="mt-1.5">
                     <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Blend</span>
                   </div>
@@ -204,24 +208,35 @@ export default function Home() {
                   <p className="text-blue-400 font-bold text-sm">$89.99</p>
                   <span className="text-xs text-gray-400">10mg</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm">
-                  Add to Cart
-                </button>
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                  onClick={() => {
+                    const p = productMap.get('bpc-157-tb-500')
+                    const size = '10mg'
+                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    addItem({ slug: 'bpc-157-tb-500', name: p?.name || 'BPC-157 & TB-500', size, price, image: p?.image, quantity: 1 })
+                  }}
+                >Add to Cart</button>
               </div>
             </div>
             
             {/* GHK-Cu */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="h-64 bg-gray-900 flex items-center justify-center p-4">
-                <img 
-                  src="/products/ghk cu 100mg bottle.png" 
-                  alt="GHK-Cu Peptide" 
-                  className="h-full object-contain"
-                />
+              <div className="relative h-64 bg-gray-900 p-4">
+                <Link href="/products/ghk">
+                  <Image
+                    src="/products/ghk cu 100mg bottle.png"
+                    alt="GHK-Cu Peptide"
+                    fill
+                    className="object-contain"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    priority={false}
+                  />
+                </Link>
               </div>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
-                  <h3 className="text-base font-semibold whitespace-nowrap">GHK-Cu</h3>
+                  <Link href="/products/ghk" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">GHK-Cu</Link>
                   <div className="mt-1.5">
                     <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Copper Peptide</span>
                   </div>
@@ -231,24 +246,35 @@ export default function Home() {
                   <p className="text-blue-400 font-bold text-sm">$119.99</p>
                   <span className="text-xs text-gray-400">100mg</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm">
-                  Add to Cart
-                </button>
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                  onClick={() => {
+                    const p = productMap.get('ghk')
+                    const size = '100mg'
+                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    addItem({ slug: 'ghk', name: p?.name || 'GHK-Cu', size, price, image: p?.image, quantity: 1 })
+                  }}
+                >Add to Cart</button>
               </div>
             </div>
             
             {/* Tirzepatide */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="h-64 bg-gray-900 flex items-center justify-center p-4">
-                <img 
-                  src="/products/Tirzepatide 10mg bottle.png" 
-                  alt="Tirzepatide Peptide" 
-                  className="h-full object-contain"
-                />
+              <div className="relative h-64 bg-gray-900 p-4">
+                <Link href="/products/triz">
+                  <Image
+                    src="/products/Tirzepatide 10mg bottle.png"
+                    alt="Tirzepatide Peptide"
+                    fill
+                    className="object-contain"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    priority={false}
+                  />
+                </Link>
               </div>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
-                  <h3 className="text-base font-semibold whitespace-nowrap">Tirzepatide</h3>
+                  <Link href="/products/triz" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">Tirzepatide</Link>
                   <div className="mt-1.5">
                     <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">GIP/GLP-1</span>
                   </div>
@@ -258,24 +284,35 @@ export default function Home() {
                   <p className="text-blue-400 font-bold text-sm">$149.99</p>
                   <span className="text-xs text-gray-400">10mg</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm">
-                  Add to Cart
-                </button>
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                  onClick={() => {
+                    const p = productMap.get('triz')
+                    const size = '10mg'
+                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    addItem({ slug: 'triz', name: p?.name || 'Tirzepatide', size, price, image: p?.image, quantity: 1 })
+                  }}
+                >Add to Cart</button>
               </div>
             </div>
             
             {/* MOTS-c */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="h-64 bg-gray-900 flex items-center justify-center p-4">
-                <img 
-                  src="/products/Mots c 10mg bottle.png" 
-                  alt="MOTS-c Peptide" 
-                  className="h-full object-contain"
-                />
+              <div className="relative h-64 bg-gray-900 p-4">
+                <Link href="/products/mots-c">
+                  <Image
+                    src="/products/Mots c 10mg bottle.png"
+                    alt="MOTS-c Peptide"
+                    fill
+                    className="object-contain"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    priority={false}
+                  />
+                </Link>
               </div>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
-                  <h3 className="text-base font-semibold whitespace-nowrap">MOTS-c</h3>
+                  <Link href="/products/mots-c" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">MOTS-c</Link>
                   <div className="mt-1.5">
                     <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Mitochondrial</span>
                   </div>
@@ -285,7 +322,15 @@ export default function Home() {
                   <p className="text-blue-400 font-bold text-sm">$109.99</p>
                   <span className="text-xs text-gray-400">10mg</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm">
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                  onClick={() => {
+                    const p = productMap.get('mots-c')
+                    const size = '10mg'
+                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    addItem({ slug: 'mots-c', name: p?.name || 'MOTS-c', size, price, image: p?.image, quantity: 1 })
+                  }}
+                >
                   Add to Cart
                 </button>
               </div>
@@ -293,16 +338,21 @@ export default function Home() {
             
             {/* Melanotan II */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="h-64 bg-gray-900 flex items-center justify-center p-4">
-                <img 
-                  src="/products/Melanotan II 10mg bottle.png" 
-                  alt="Melanotan II Peptide" 
-                  className="h-full object-contain"
-                />
+              <div className="relative h-64 bg-gray-900 p-4">
+                <Link href="/products/melanotan-ii">
+                  <Image
+                    src="/products/Melanotan II 10mg bottle.png"
+                    alt="Melanotan II Peptide"
+                    fill
+                    className="object-contain"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    priority={false}
+                  />
+                </Link>
               </div>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
-                  <h3 className="text-base font-semibold whitespace-nowrap">Melanotan II</h3>
+                  <Link href="/products/melanotan-ii" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">Melanotan II</Link>
                   <div className="mt-1.5">
                     <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Melanocortin</span>
                   </div>
@@ -312,24 +362,35 @@ export default function Home() {
                   <p className="text-blue-400 font-bold text-sm">$79.99</p>
                   <span className="text-xs text-gray-400">10mg</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm">
-                  Add to Cart
-                </button>
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                  onClick={() => {
+                    const p = productMap.get('melanotan-ii')
+                    const size = '10mg'
+                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    addItem({ slug: 'melanotan-ii', name: p?.name || 'Melanotan II', size, price, image: p?.image, quantity: 1 })
+                  }}
+                >Add to Cart</button>
               </div>
             </div>
             
             {/* NAD+ */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="h-64 bg-gray-900 flex items-center justify-center p-4">
-                <img 
-                  src="/products/NAD+ 500mg bottle.png" 
-                  alt="NAD+ Supplement" 
-                  className="h-full object-contain"
-                />
+              <div className="relative h-64 bg-gray-900 p-4">
+                <Link href="/products/nad">
+                  <Image
+                    src="/products/NAD+ 500mg bottle.png"
+                    alt="NAD+ Supplement"
+                    fill
+                    className="object-contain"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    priority={false}
+                  />
+                </Link>
               </div>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
-                  <h3 className="text-base font-semibold whitespace-nowrap">NAD+</h3>
+                  <Link href="/products/nad" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">NAD+</Link>
                   <div className="mt-1.5">
                     <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Coenzyme</span>
                   </div>
@@ -339,23 +400,19 @@ export default function Home() {
                   <p className="text-blue-400 font-bold text-sm">$199.99</p>
                   <span className="text-xs text-gray-400">500mg</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-700 transition-colors text-sm">
-                  Add to Cart
-                </button>
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
+                  onClick={() => {
+                    const p = productMap.get('nad')
+                    const size = '500mg'
+                    const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
+                    addItem({ slug: 'nad', name: p?.name || 'NAD+', size, price, image: p?.image, quantity: 1 })
+                  }}
+                >Add to Cart</button>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="h-64 bg-gray-200"></div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Product Name</h3>
-                <p className="text-gray-600 mb-4">Product description goes here.</p>
-                <p className="text-primary font-bold text-lg mb-4">$99.99</p>
-                <button className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary/80 transition-colors">
-                  Add to Cart
-                </button>
-              </div>
-            </div>
+            {/* Removed placeholder empty product card */}
           </div>
         </div>
       </section>
@@ -373,10 +430,13 @@ export default function Home() {
             {blogs.map((blog) => (
               <div key={blog.id} className="bg-gray-800/70 rounded-lg overflow-hidden shadow-lg border border-blue-800/30 hover:border-blue-500/50 transition-all">
                 <div className="relative w-full aspect-square">
-                  <img 
-                    src={blog.image} 
-                    alt={blog.title} 
-                    className="w-full h-full object-cover"
+                  <Image
+                    src={blog.image}
+                    alt={blog.title}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 33vw, 100vw"
+                    priority={false}
                   />
                 </div>
                 <div className="p-5">
@@ -498,7 +558,6 @@ export default function Home() {
           <p className="text-center text-gray-600 max-w-2xl mx-auto mb-8 text-sm">
             All our products come with certificates of analysis to ensure quality and purity.
           </p>
-          
           <div className="text-center">
             <button className="bg-blue-600 text-white py-2 px-6 text-sm rounded-md hover:bg-blue-700 transition-colors">
               View COAs
