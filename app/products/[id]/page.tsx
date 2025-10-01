@@ -14,6 +14,8 @@ function imageForSlug(slug: string): string | undefined {
       return '/products/ghk cu 100mg bottle.png'
     case 'triz':
       return '/products/Tirzepatide 10mg bottle.png'
+    case 'mots-c':
+      return '/products/Mots c 10mg bottle.png'
     case 'melanotan-ii':
       return '/products/Melanotan II 10mg bottle.png'
     case 'nad':
@@ -26,7 +28,7 @@ function imageForSlug(slug: string): string | undefined {
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const id = use(params).id
   const product = products.find((p) => p.id === id)
-  const { addItem } = useCart()
+  const { addItem, openCart } = useCart()
 
   if (!product) {
     return (
@@ -72,6 +74,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 const qty = Number((form.elements.namedItem('qty') as HTMLInputElement)?.value || 1)
                 const price = product.sizes.find((s) => s.size === size)?.price ?? product.price
                 addItem({ slug: product.id, name: product.name, size, price, image: defaultImage, quantity: qty })
+                openCart()
               }}
             >
               <div>
@@ -108,6 +111,5 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
-    </div>
-  )
+    )
 }

@@ -3,7 +3,24 @@
 import { useState } from 'react'
 import { useCart } from './CartContext'
 
-export default function CheckoutCartButton({ className = '' }: { className?: string }) {
+type Customer = {
+  name: string
+  email: string
+  phone: string
+  address: { street: string; city: string; state: string; zip: string; country: string }
+}
+
+export default function CheckoutCartButton({
+  className = '',
+  customer,
+  shippingCents = 1000,
+  requireCustomer = false,
+}: {
+  className?: string
+  customer?: Customer
+  shippingCents?: number
+  requireCustomer?: boolean
+}) {
   const { items } = useCart()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -14,12 +31,18 @@ export default function CheckoutCartButton({ className = '' }: { className?: str
     setError(null)
     try {
       const payload = {
-        items: items.map((i) => ({ slug: i.slug, quantity: i.quantity, size: i.size }))
+        items: items.map((i) => ({ slug: i.slug, quantity: i.quantity, size: i.size })),
+        customer,
+        shippingCents,
       }
+      // Save last order for success page webhook handoff
+      try {
+        localStorage.setItem('lastOrder', JSON.stringify({ customer, cart: payload.items }))
+      } catch {}
       const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Checkout failed')
@@ -33,11 +56,11 @@ export default function CheckoutCartButton({ className = '' }: { className?: str
 
   return (
     <button
-      disabled={items.length === 0 || loading}
+      disabled={items.length === 0 || loading || (requireCustomer && !customer)}
       onClick={handleCheckout}
       className={className || 'bg-blue-600 hover:bg-blue-700 text-white rounded py-2 px-4 disabled:opacity-50'}
     >
-      {loading ? 'Redirecting…' : 'Proceed to Checkout'}
+      {loading ? 'Redirecting…' : 'Buy Now'}
       {error && <span className="ml-2 text-red-400 text-xs">{error}</span>}
     </button>
   )

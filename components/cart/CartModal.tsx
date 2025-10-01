@@ -1,14 +1,43 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useCart } from './CartContext'
 import CheckoutCartButton from './CheckoutCartButton'
 
 export default function CartModal() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, total } = useCart()
-  const [confirmSupplies, setConfirmSupplies] = useState(false)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [street, setStreet] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [zip, setZip] = useState('')
+  const [country, setCountry] = useState('')
+  const [acceptTerms, setAcceptTerms] = useState(false)
+
+  const shippingCents = 1000
+  const totalWithShipping = useMemo(() => total + shippingCents / 100, [total])
 
   if (!isOpen) return null
+
+  const formValid =
+    !!name &&
+    !!email &&
+    !!phone &&
+    !!street &&
+    !!city &&
+    !!state &&
+    !!zip &&
+    !!country &&
+    acceptTerms
+
+  const customer = {
+    name,
+    email,
+    phone,
+    address: { street, city, state, zip, country },
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -22,61 +51,76 @@ export default function CartModal() {
         {items.length === 0 ? (
           <p className="text-gray-400">Your cart is empty.</p>
         ) : (
-          <div className="space-y-3 max-h-[50vh] overflow-y-auto">
-            {items.map((item) => (
-              <div key={`${item.slug}-${item.size ?? ''}`} className="flex items-center justify-between border border-blue-900/40 rounded p-2">
-                <div className="text-sm">
-                  <div className="font-medium">{item.name} {item.size ? `(${item.size})` : ''}</div>
-                  <div className="text-gray-400">${item.price.toFixed(2)} each</div>
+          <>
+            <div className="space-y-3 max-h-[35vh] overflow-y-auto">
+              {items.map((item) => (
+                <div key={`${item.slug}-${item.size ?? ''}`} className="flex items-center justify-between border border-blue-900/40 rounded p-2">
+                  <div className="text-sm">
+                    <div className="font-medium">{item.name} {item.size ? `(${item.size})` : ''}</div>
+                    <div className="text-gray-400">${item.price.toFixed(2)} each</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      min={1}
+                      value={item.quantity}
+                      onChange={(e) => updateQuantity(item.slug, item.size, Math.max(1, Number(e.target.value)))}
+                      className="w-16 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-sm"
+                    />
+                    <button
+                      className="text-red-400 hover:text-red-300 text-sm"
+                      onClick={() => removeItem(item.slug, item.size)}
+                    >Remove</button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    min={1}
-                    value={item.quantity}
-                    onChange={(e) => updateQuantity(item.slug, item.size, Math.max(1, Number(e.target.value)))}
-                    className="w-16 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-sm"
-                  />
-                  <button
-                    className="text-red-400 hover:text-red-300 text-sm"
-                    onClick={() => removeItem(item.slug, item.size)}
-                  >Remove</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="mt-4 flex justify-between items-center">
-          <div className="text-sm text-gray-300">Total</div>
-          <div className="text-lg font-bold text-blue-400">${total.toFixed(2)}</div>
-        </div>
-
-        {!confirmSupplies ? (
-          <div className="mt-4 space-y-2">
-            <button
-              disabled={items.length === 0}
-              onClick={() => setConfirmSupplies(true)}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2 disabled:opacity-50"
-            >Checkout</button>
-            <p className="text-xs text-gray-400">First-time buyers will be asked about supplies.</p>
-          </div>
-        ) : (
-          <div className="mt-4 space-y-3 border-t border-gray-700 pt-3">
-            <p className="text-sm">Are you a first-time peptide buyer? You’ll need:</p>
-            <ul className="text-sm list-disc list-inside text-gray-300">
-              <li>
-                Syringes: <a className="text-blue-400 hover:underline" target="_blank" href="https://a.co/d/3621bhc" rel="noreferrer">https://a.co/d/3621bhc</a>
-              </li>
-              <li>
-                BAC water (reconstitution solution): <a className="text-blue-400 hover:underline" target="_blank" href="https://www.amazon.com/s?k=bac+water+for+peptides&crid=1BU0WL466H73K&sprefix=bac+wa%2Caps%2C128&ref=nb_sb_ss_p13n-expert-pd-ops-ranker_2_6" rel="noreferrer">Amazon BAC water search</a>
-              </li>
-            </ul>
-            <div className="flex gap-2">
-              <CheckoutCartButton className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded py-2" />
-              <button onClick={() => setConfirmSupplies(false)} className="flex-1 bg-gray-700 hover:bg-gray-600 rounded py-2">Back</button>
+              ))}
             </div>
-          </div>
+
+            <div className="mt-4 space-y-3 border-t border-gray-700 pt-3">
+              <div className="flex justify-between items-center">
+                <div className="text-sm text-gray-300">Subtotal</div>
+                <div className="text-lg font-bold text-blue-400">${total.toFixed(2)}</div>
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="text-sm text-gray-300">Shipping</div>
+                <div className="text-lg font-bold text-blue-400">$10.00</div>
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="text-sm text-gray-300">Total</div>
+                <div className="text-lg font-bold text-blue-400">${totalWithShipping.toFixed(2)}</div>
+              </div>
+            </div>
+
+            <form className="mt-4 space-y-2">
+              <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+              <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="email" className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone Number" className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+
+              <input value={street} onChange={(e) => setStreet(e.target.value)} placeholder="Street" className="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+              <div className="grid grid-cols-2 gap-2">
+                <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+                <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State" className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <input value={zip} onChange={(e) => setZip(e.target.value)} placeholder="Zip" className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+                <input value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Country" className="bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" />
+              </div>
+
+              <label className="flex items-center gap-2 text-sm text-gray-300 mt-1">
+                <input type="checkbox" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />
+                Accept Terms (required)
+              </label>
+            </form>
+
+            <div className="mt-3">
+              <CheckoutCartButton
+                className="w-full bg-green-600 hover:bg-green-700 text-white rounded py-2 disabled:opacity-50"
+                customer={formValid ? customer : undefined}
+                shippingCents={shippingCents}
+                requireCustomer={true}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

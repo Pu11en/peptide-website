@@ -15,22 +15,45 @@ const ItemsSchema = z.array(
   })
 )
 
+const CustomerSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().min(1),
+  address: z.object({
+    street: z.string().min(1),
+    city: z.string().min(1),
+    state: z.string().min(1),
+    zip: z.string().min(1),
+    country: z.string().min(1),
+  }),
+}).optional()
+
 export const POST = withErrorHandling(async (req: Request) => {
-    if (!stripe) {
-      return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
-    }
+  if (!stripe) {
+    return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
+  }
 
-    const body = await req.json()
-    const parsed = ItemsSchema.safeParse(body.items)
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: 'Invalid items payload', issues: parsed.error.flatten() },
-        { status: 400 }
-      )
-    }
+  const body = await req.json()
+  const parsedItems = ItemsSchema.safeParse(body.items)
+  const parsedCustomer = CustomerSchema.safeParse(body.customer)
+  const shippingCents = typeof body.shippingCents === 'number' ? body.shippingCents : 1000
 
-    const items = parsed.data
-    const slugs = items.map((i) => i.slug)
+  if (!parsedItems.success) {
+    return NextResponse.json(
+      { error: 'Invalid items payload', issues: parsedItems.error.flatten() },
+      { status: 400 }
+    )
+  }
+  if (body.customer && !parsedCustomer.success) {
+    return NextResponse.json(
+      { error: 'Invalid customer payload', issues: parsedCustomer.error.flatten() },
+      { status: 400 }
+    )
+  }
+
+  const items = parsedItems.data
+  const customer = parsedCustomer.success ? parsedCustomer.data : undefined
+  const slugs = items.map((i) => i.slug)
 
     // Try database products first
     let usingDb = false
@@ -98,6 +121,19 @@ export const POST = withErrorHandling(async (req: Request) => {
       }
     }
 
+    // Append flat shipping as a line item
+    const shippingLineItem: Stripe.Checkout.SessionCreateParams.LineItem = {
+      quantity: 1,
+      price_data: {
+        currency: 'usd',
+        unit_amount: shippingCents,
+        product_data: {
+          name: 'Flat Shipping',
+        },
+      },
+    }
+    line_items.push(shippingLineItem)
+
     const siteUrl =
       req.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'
 
@@ -108,6 +144,7 @@ export const POST = withErrorHandling(async (req: Request) => {
       cancel_url: `${siteUrl}/?canceled=1`,
       metadata: {
         items: JSON.stringify(items.map((i) => ({ slug: i.slug, qty: i.quantity, size: i.size ?? '' }))),
+        customerEmail: customer?.email || '',
       },
     })
 

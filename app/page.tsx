@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { blogs } from './data/blogs';
 import { products as productList } from './data/products';
 import { useCart } from '../components/cart/CartContext';
@@ -12,12 +12,29 @@ import CheckoutCartButton from '../components/cart/CheckoutCartButton';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { addItem } = useCart();
+  const [isMobile, setIsMobile] = useState(false);
+  const { addItem, openCart } = useCart();
   const productMap = new Map(productList.map((p) => [p.id, p]));
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('canceled') === '1') {
+      alert('Payment canceled. Try again.')
+    }
+  }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   return (
     <>
@@ -30,17 +47,19 @@ export default function Home() {
           className="absolute inset-0 w-full h-full object-cover hidden md:block"
         />
         
-        {/* Mobile Hero Video */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover md:hidden"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video>
+        {/* Mobile Hero Video (only render on mobile; avoid preload errors) */}
+        {isMobile && (
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+          >
+            <source src="/hero-video.mp4" type="video/mp4" media="(max-width: 767px)" />
+          </video>
+        )}
         
         {/* 3 Lines Menu Button in Top Right Corner */}
         <button 
@@ -215,8 +234,10 @@ export default function Home() {
                     const size = '10mg'
                     const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
                     addItem({ slug: 'bpc-157-tb-500', name: p?.name || 'BPC-157 & TB-500', size, price, image: p?.image, quantity: 1 })
+                    openCart()
                   }}
                 >Add to Cart</button>
+                {/* Repeat the openCart() call after addItem for each product card's button */}
               </div>
             </div>
             
@@ -253,6 +274,7 @@ export default function Home() {
                     const size = '100mg'
                     const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
                     addItem({ slug: 'ghk', name: p?.name || 'GHK-Cu', size, price, image: p?.image, quantity: 1 })
+                    openCart()
                   }}
                 >Add to Cart</button>
               </div>
@@ -291,6 +313,7 @@ export default function Home() {
                     const size = '10mg'
                     const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
                     addItem({ slug: 'triz', name: p?.name || 'Tirzepatide', size, price, image: p?.image, quantity: 1 })
+                    openCart()
                   }}
                 >Add to Cart</button>
               </div>
@@ -329,6 +352,7 @@ export default function Home() {
                     const size = '10mg'
                     const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
                     addItem({ slug: 'mots-c', name: p?.name || 'MOTS-c', size, price, image: p?.image, quantity: 1 })
+                    openCart()
                   }}
                 >
                   Add to Cart
@@ -369,6 +393,7 @@ export default function Home() {
                     const size = '10mg'
                     const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
                     addItem({ slug: 'melanotan-ii', name: p?.name || 'Melanotan II', size, price, image: p?.image, quantity: 1 })
+                    openCart()
                   }}
                 >Add to Cart</button>
               </div>
@@ -407,6 +432,7 @@ export default function Home() {
                     const size = '500mg'
                     const price = p?.sizes.find((s) => s.size === size)?.price ?? p?.price ?? 0
                     addItem({ slug: 'nad', name: p?.name || 'NAD+', size, price, image: p?.image, quantity: 1 })
+                    openCart()
                   }}
                 >Add to Cart</button>
               </div>
@@ -420,7 +446,7 @@ export default function Home() {
       {/* Research & Education Section */}
       <section id="research" className="py-20 bg-gradient-to-b from-blue-900 to-gray-900 text-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-6 text-white">Research & Education</h2>
+          <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Research & Education</h2>
           <p className="text-center text-gray-300 mb-12 max-w-2xl mx-auto text-sm">
             Stay informed with the latest peptide research and educational resources.
           </p>
