@@ -11,7 +11,7 @@ function imageForSlug(slug: string): string | undefined {
     case 'bpc-157-tb-500':
       return '/products/bpc-157-tb500-10mg-new.png'
     case 'ghk':
-      return '/products/ghk-cu-100mg-bottle.png'
+      return '/products/ghk-cu-100mg-bottle-new.png'
     case 'triz':
       return '/products/tirzepatide-10mg-bottle.png'
     case 'mots-c':

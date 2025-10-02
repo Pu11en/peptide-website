@@ -61,24 +61,31 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
-        {/* Desktop Hero Image - Only visible on desktop */}
-        <img
-          src="https://res.cloudinary.com/dmdjagtkx/image/upload/v1759062155/defipullen_website_lighting_hero_--ar_21_--oref_httpss.mj.run_2220e69d-abbe-4745-bdc6-e3620788d579_3_2_yz6yoy.png"
-          alt="Incredible Peptides - Lightning Energy"
-          className="absolute inset-0 w-full h-full object-cover hidden md:block"
-        />
-        
-        {/* Mobile Hero Video (only render on mobile; avoid preload errors) */}
-        {isMobile && (
+        {/* Desktop Hero Video - Only visible on desktop */}
+        {!isMobile && (
           <video
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover hidden md:block"
             autoPlay
             muted
             loop
             playsInline
             preload="none"
           >
-            <source src="/hero-video.mp4" type="video/mp4" media="(max-width: 767px)" />
+            <source src="https://res.cloudinary.com/dmdjagtkx/video/upload/v1759408577/4fdd1c67-f89a-4766-964a-7ee2101630be_vfur0q.mp4" type="video/mp4" media="(min-width: 768px)" />
+          </video>
+        )}
+        
+        {/* Mobile Hero Video - Only visible on mobile */}
+        {isMobile && (
+          <video
+            className="absolute inset-0 w-full h-full object-cover md:hidden"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+          >
+            <source src="https://res.cloudinary.com/dmdjagtkx/video/upload/v1758689443/social_defipullen_httpss.mj.run4owL1ng-Xks_website_lighting_hero_--a_5d363600-c6ef-4ebc-bd63-71ebde3c4da7_2_ptz2ph.mp4" type="video/mp4" media="(max-width: 767px)" />
           </video>
         )}
         

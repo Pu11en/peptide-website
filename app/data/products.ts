@@ -102,7 +102,7 @@ export const products: Product[] = [
     name: 'GHK-Cu',
     description: 'A research peptide being studied for its potential skin rejuvenation and wound healing properties.',
     price: 50,
-    image: '/products/ghk-cu-100mg-bottle.png',
+    image: '/products/ghk-cu-100mg-bottle-new.png',
     category: 'anti-aging',
     sizes: [
       { size: '50mg', price: 50 }

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Section Responsive Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to match the implementation */
+        .hero-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            padding-top: 5rem;
+        }
+        
+        .test-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            z-index: 100;
+            max-width: 300px;
+        }
+        
+        .test-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+        
+        .console-log {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="m-0 p-0">
+    <!-- Test Information Panel -->
+    <div class="test-info">
+        <h3>Test Information</h3>
+        <p>Viewport Width: <span id="viewport-width">0</span>px</p>
+        <p>Is Mobile: <span id="is-mobile">false</span></p>
+        <p>Video Element: <span id="video-exists">false</span></p>
+        <p>Image Element: <span id="image-exists">false</span></p>
+        <p>Video Status: <span id="video-status">N/A</span></p>
+        <p>Video Error: <span id="video-error">None</span></p>
+    </div>
+    
+    <!-- Test Controls -->
+    <div class="test-controls">
+        <h3>Test Controls</h3>
+        <button id="resize-mobile" class="bg-blue-600 text-white px-3 py-1 rounded m-1">Mobile (≤767px)</button>
+        <button id="resize-desktop" class="bg-green-600 text-white px-3 py-1 rounded m-1">Desktop (>767px)</button>
+        <button id="toggle-video" class="bg-purple-600 text-white px-3 py-1 rounded m-1">Toggle Video</button>
+        <button id="console-clear" class="bg-red-600 text-white px-3 py-1 rounded m-1">Clear Console</button>
+    </div>
+    
+    <!-- Console Log -->
+    <div class="console-log" id="console-log">
+        <div>Console output will appear here...</div>
+    </div>
+    
+    <!-- Hero Section (Mirrored from the implementation) -->
+    <section class="hero-container">
+        <!-- Desktop Hero Image - Only visible on desktop -->
+        <img
+            id="desktop-image"
+            src="https://res.cloudinary.com/dmdjagtkx/image/upload/v1759062155/defipullen_website_lighting_hero_--ar_21_--oref_httpss.mj.run_2220e69d-abbe-4745-bdc6-e3620788d579_3_2_yz6yoy.png"
+            alt="Incredible Peptides - Lightning Energy"
+            class="absolute inset-0 w-full h-full object-cover hidden md:block"
+        />
+        
+        <!-- Mobile Hero Video (only render on mobile; avoid preload errors) -->
+        <video
+            id="mobile-video"
+            class="absolute inset-0 w-full h-full object-cover hidden"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+        >
+            <source src="https://res.cloudinary.com/dmdjagtkx/video/upload/v1758689443/social_defipullen_httpss.mj.run4owL1ng-Xks_website_lighting_hero_--a_5d363600-c6ef-4ebc-bd63-71ebde3c4da7_2_ptz2ph.mp4" type="video/mp4" media="(max-width: 767px)" />
+        </video>
+        
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <div class="flex-1"></div>
+            
+            <!-- Test Content -->
+            <div class="bg-black/50 p-6 rounded-lg max-w-md">
+                <h1 class="text-2xl font-bold mb-4">Hero Section Test</h1>
+                <p class="mb-2">This is a test page to verify the responsive behavior of the hero section.</p>
+                <p class="mb-2">Resize the browser window to test responsive behavior.</p>
+                <p>Mobile breakpoint: ≤767px</p>
+            </div>
+            
+            <!-- Scroll Down Indicator -->
+            <div class="animate-bounce mb-28">
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-8 w-8" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                >
+                    <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+                    />
+                </svg>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // Console logging function
+        function log(message) {
+            const consoleLog = document.getElementById('console-log');
+            const timestamp = new Date().toLocaleTimeString();
+            consoleLog.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+        
+        // Update test information
+        function updateTestInfo() {
+            const width = window.innerWidth;
+            const isMobile = width <= 767;
+            const video = document.getElementById('mobile-video');
+            const image = document.getElementById('desktop-image');
+            
+            document.getElementById('viewport-width').textContent = width;
+            document.getElementById('is-mobile').textContent = isMobile;
+            document.getElementById('video-exists').textContent = !!video;
+            document.getElementById('image-exists').textContent = !!image;
+            
+            // Update video status
+            if (video) {
+                document.getElementById('video-status').textContent = 
+                    video.paused ? 'Paused' : 
+                    video.ended ? 'Ended' : 
+                    video.readyState >= 2 ? 'Playing' : 'Loading';
+                
+                if (video.error) {
+                    document.getElementById('video-error').textContent = video.error.message;
+                }
+            }
+        }
+        
+        // Handle responsive behavior
+        function handleResponsive() {
+            const width = window.innerWidth;
+            const isMobile = width <= 767;
+            const video = document.getElementById('mobile-video');
+            const image = document.getElementById('desktop-image');
+            
+            log(`Viewport resized to ${width}px (Mobile: ${isMobile})`);
+            
+            if (isMobile) {
+                // Show video, hide image
+                if (video) {
+                    video.classList.remove('hidden');
+                    image.classList.add('hidden', 'md:block');
+                    image.classList.remove('block');
+                    log('Showing mobile video, hiding desktop image');
+                    
+                    // Try to play video
+                    video.play().then(() => {
+                        log('Video started playing successfully');
+                    }).catch(error => {
+                        log(`Error playing video: ${error.message}`);
+                    });
+                }
+            } else {
+                // Show image, hide video
+                if (video) {
+                    video.classList.add('hidden');
+                    image.classList.remove('hidden');
+                    image.classList.add('md:block');
+                    log('Showing desktop image, hiding mobile video');
+                    
+                    // Pause video when hidden
+                    video.pause();
+                }
+            }
+            
+            updateTestInfo();
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Test page initialized');
+            
+            // Set up video event listeners
+            const video = document.getElementById('mobile-video');
+            
+            video.addEventListener('loadstart', () => log('Video: Load start'));
+            video.addEventListener('loadeddata', () => log('Video: Data loaded'));
+            video.addEventListener('canplay', () => log('Video: Can play'));
+            video.addEventListener('play', () => log('Video: Playing'));
+            video.addEventListener('pause', () => log('Video: Paused'));
+            video.addEventListener('ended', () => log('Video: Ended'));
+            video.addEventListener('error', (e) => log(`Video error: ${e.message || 'Unknown error'}`));
+            video.addEventListener('stalled', () => log('Video: Stalled'));
+            video.addEventListener('waiting', () => log('Video: Waiting'));
+            
+            // Set up resize listener
+            window.addEventListener('resize', handleResponsive);
+            
+            // Set up control buttons
+            document.getElementById('resize-mobile').addEventListener('click', () => {
+                window.resizeTo(375, 667); // iPhone size
+                log('Resized to mobile viewport (375x667)');
+            });
+            
+            document.getElementById('resize-desktop').addEventListener('click', () => {
+                window.resizeTo(1200, 800); // Desktop size
+                log('Resized to desktop viewport (1200x800)');
+            });
+            
+            document.getElementById('toggle-video').addEventListener('click', () => {
+                if (video.paused) {
+                    video.play().then(() => log('Video play triggered')).catch(e => log(`Play error: ${e.message}`));
+                } else {
+                    video.pause();
+                    log('Video pause triggered');
+                }
+            });
+            
+            document.getElementById('console-clear').addEventListener('click', () => {
+                document.getElementById('console-log').innerHTML = '<div>Console cleared</div>';
+            });
+            
+            // Initial responsive check
+            handleResponsive();
+            
+            // Update info every second
+            setInterval(updateTestInfo, 1000);
+        });
+    </script>
+</body>
+</html>
