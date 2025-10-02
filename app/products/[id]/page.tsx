@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { use } from 'react'
 import { products } from '@/app/data/products'
 import { useCart } from '@/components/cart/CartContext'
+import { Product, ProductVariant, CartItem } from '@/lib/productUtils'
 
 function imageForSlug(slug: string): string | undefined {
   switch (slug) {
@@ -22,8 +23,6 @@ function imageForSlug(slug: string): string | undefined {
       return '/products/nad+ 100mg.png'
     case 'reta':
       return '/products/reta 10mg bottle.png'
-    case 'hgh':
-      return '/products/retatruide 15mg.png'
     case 'tesamorelin':
       return '/products/tesamorlin 10mg bottle.png'
     case 'igf-1':
@@ -34,9 +33,9 @@ function imageForSlug(slug: string): string | undefined {
 }
 
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const id = use(params).id
-  const product = products.find((p) => p.id === id)
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
+  const product = products.find((p) => p.id === id) as Product | undefined
   const { addItem, openCart } = useCart()
 
   if (!product) {

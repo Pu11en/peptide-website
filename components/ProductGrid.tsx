@@ -3,6 +3,8 @@
 import { useState, useMemo } from 'react'
 import { useCart } from './cart/CartContext'
 import { products, categories } from '@/app/data/products'
+import { normalizeProduct, getRenderableProducts, ProductFilters } from '@/lib/productUtils'
+import ProductCard from './ProductCard'
 import { ShoppingCart, Filter, Search, X } from 'lucide-react'
 
 export default function ProductGrid() {
@@ -12,8 +14,14 @@ export default function ProductGrid() {
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
+  const normalizedProducts = useMemo(() => {
+    // First filter out invalid products
+    const validProducts = getRenderableProducts(products)
+    return validProducts.map(normalizeProduct)
+  }, [])
+
   const filteredProducts = useMemo(() => {
-    let filtered = products
+    let filtered = normalizedProducts
 
     // Filter by category
     if (selectedCategory !== 'all') {
@@ -23,7 +31,7 @@ export default function ProductGrid() {
     // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
@@ -32,30 +40,40 @@ export default function ProductGrid() {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'name':
-          return a.name.localeCompare(b.name)
+          return a.title.localeCompare(b.title)
         case 'price-low':
-          return a.price - b.price
+          // Find the lowest price for each product
+          const minPriceA = Math.min(...a.variants.map(v => v.price))
+          const minPriceB = Math.min(...b.variants.map(v => v.price))
+          return minPriceA - minPriceB
         case 'price-high':
-          return b.price - a.price
+          // Find the highest price for each product
+          const maxPriceA = Math.max(...a.variants.map(v => v.price))
+          const maxPriceB = Math.max(...b.variants.map(v => v.price))
+          return maxPriceB - maxPriceA
         default:
           return 0
       }
     })
 
     return filtered
-  }, [selectedCategory, searchTerm, sortBy])
+  }, [selectedCategory, searchTerm, sortBy, normalizedProducts])
 
   const handleQuickAdd = (product: any, size?: string) => {
-    const price = size ? product.sizes.find((s: any) => s.size === size)?.price || product.price : product.price
-    addItem({
-      slug: product.id,
-      name: product.name,
-      size,
-      price,
-      image: product.image,
-      quantity: 1
-    })
-    openCart()
+    const originalProduct = products.find(p => p.id === product.id)
+    const price = size ? originalProduct?.sizes.find((s: any) => s.size === size)?.price || originalProduct?.price : originalProduct?.price
+    
+    if (originalProduct) {
+      addItem({
+        slug: originalProduct.id,
+        name: originalProduct.name,
+        size,
+        price: price || 0,
+        image: originalProduct.image,
+        quantity: 1
+      })
+      openCart()
+    }
   }
 
   return (
@@ -168,61 +186,12 @@ export default function ProductGrid() {
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="aspect-w-1 aspect-h-1 w-full">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-64 object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{product.name}</h3>
-              <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
-              
-              {/* Sizes */}
-              {product.sizes.length > 1 && (
-                <div className="mb-3">
-                  <p className="text-xs text-gray-500 mb-1">Available sizes:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {product.sizes.map((size) => (
-                      <span key={size.size} className="text-xs bg-gray-100 px-2 py-1 rounded">
-                        {size.size} - ${size.price}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Price */}
-              <div className="mb-4">
-                <span className="text-2xl font-bold text-blue-600">
-                  ${product.price.toFixed(2)}
-                </span>
-                {product.sizes.length > 1 && (
-                  <span className="text-sm text-gray-500 ml-2">and more</span>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              {product.sizes.length > 1 ? (
-                <button
-                  onClick={() => window.location.href = `/products/${product.id}`}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  View Options
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleQuickAdd(product)}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  Quick Add
-                </button>
-              )}
-            </div>
-          </div>
+          <ProductCard
+            key={product.id}
+            product={product}
+            onQuickAdd={(productId, variant) => handleQuickAdd(products.find(p => p.id === productId), variant)}
+            onViewOptions={(productId) => window.location.href = `/products/${productId}`}
+          />
         ))}
       </div>
 

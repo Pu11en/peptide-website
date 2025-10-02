@@ -63,17 +63,6 @@ export const products: Product[] = [
     ]
   },
   {
-    id: 'hgh',
-    name: 'HGH',
-    description: 'A research peptide being studied for its potential effects on muscle growth, recovery, and anti-aging properties.',
-    price: 199.99,
-    image: '/products/retatruide 15mg.png',
-    category: 'muscle-growth',
-    sizes: [
-      { size: '10IU', price: 199.99 }
-    ]
-  },
-  {
     id: 'tesamorelin',
     name: 'Tesamorelin',
     description: 'A research peptide being studied for its potential effects on reducing visceral fat and improving body composition.',

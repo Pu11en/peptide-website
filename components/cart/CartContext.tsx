@@ -2,14 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react'
 
-export type CartItem = {
-  slug: string
-  name: string
-  size?: string
-  price: number
-  image?: string
-  quantity: number
-}
+import { CartItem } from '@/lib/productUtils'
 
 type CartContextValue = {
   items: CartItem[]
@@ -34,7 +27,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem('cart')
-      if (raw) setItems(JSON.parse(raw))
+      if (raw) {
+        const parsed = JSON.parse(raw) as CartItem[]
+        // Validate that parsed items match CartItem type
+        if (Array.isArray(parsed) && parsed.every(item =>
+          item.slug && item.name && typeof item.price === 'number' &&
+          typeof item.quantity === 'number'
+        )) {
+          setItems(parsed)
+        }
+      }
     } catch {}
   }, [])
 
