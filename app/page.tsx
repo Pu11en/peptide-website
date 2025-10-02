@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { blogs } from './data/blogs';
-import { products as productList } from './data/products';
+import ProductGrid from '../components/ProductGrid';
+import SlideOutCart from '../components/cart/SlideOutCart';
 import { useCart } from '../components/cart/CartContext';
 import CartIconButton from '../components/cart/CartIconButton';
 import CheckoutCartButton from '../components/cart/CheckoutCartButton';
@@ -13,29 +14,7 @@ import CheckoutCartButton from '../components/cart/CheckoutCartButton';
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { addItem, openCart } = useCart();
-  const productMap = new Map(productList.map((p) => [p.id, p]));
-  const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>(() => {
-    const initial: Record<string, string> = {}
-    productList.forEach((p) => {
-      initial[p.id] = p.sizes[0]?.size ?? ''
-    })
-    return initial
-  })
-
-  const priceFor = (id: string, size?: string) => {
-    const p = productMap.get(id)
-    if (!p) return 0
-    if (size) {
-      const found = p.sizes.find((s) => s.size === size)
-      if (found) return found.price
-    }
-    return p.price
-  }
-
-  const setSize = (id: string, size: string) => {
-    setSelectedSizes((prev) => ({ ...prev, [id]: size }))
-  }
+  const { isOpen, openCart } = useCart();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -90,14 +69,25 @@ export default function Home() {
         )}
         
         {/* 3 Lines Menu Button in Top Right Corner */}
-        <button 
-          onClick={toggleMenu} 
-          className="absolute top-6 right-6 z-30 flex flex-col items-end focus:outline-none"
+        <button
+          onClick={toggleMenu}
+          className="absolute top-6 right-20 z-30 flex flex-col items-end focus:outline-none"
           aria-label="Toggle navigation menu"
         >
           <div className={`w-8 h-0.5 bg-white mb-2 transition-transform duration-300 ${isMenuOpen ? 'transform rotate-45 translate-y-2.5' : ''}`}></div>
           <div className={`w-8 h-0.5 bg-white mb-2 transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}></div>
           <div className={`w-8 h-0.5 bg-white transition-transform duration-300 ${isMenuOpen ? 'transform -rotate-45 -translate-y-2.5' : ''}`}></div>
+        </button>
+
+        {/* Cart Button */}
+        <button
+          onClick={openCart}
+          className="absolute top-6 right-6 z-30 bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition-colors"
+          aria-label="Open shopping cart"
+        >
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
         </button>
         
         {/* Navigation Menu */}
@@ -224,325 +214,8 @@ export default function Home() {
       </section>
       
       {/* Products Section */}
-  <section id="products" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white scroll-mt-24">
-    <div className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold text-center mb-4">Products</h2>
-      <p className="text-center text-gray-300 mb-3 max-w-2xl mx-auto">Browse our research-only peptide products. Not for human consumption.</p>
-      {/* Section actions: Checkout */}
-      <div className="flex items-center justify-center gap-3 mb-6">
-        <CheckoutCartButton className="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2" />
-      </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* BPC-157 & TB-500 */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <Link href="/products/bpc-157-tb-500">
-                <div
-                  className="relative h-64 bg-gray-900"
-                  style={{
-                    backgroundImage: `url('${productMap.get('bpc-157-tb-500')?.image || '/products/bpc 157 tb500 10mg.png'}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                  }}
-                  aria-label="BPC-157 & TB-500 Blend"
-                />
-              </Link>
-              <div className="p-5">
-                <div className="flex flex-col mb-2">
-                  <Link href="/products/bpc-157-tb-500" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">BPC-157 & TB-500</Link>
-                  <div className="mt-1.5">
-                    <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Blend</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-xs mb-3">Premium blend for enhanced tissue repair and recovery research.</p>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">${priceFor('bpc-157-tb-500', selectedSizes['bpc-157-tb-500']).toFixed(2)}</p>
-                  <span className="text-xs text-gray-400">{selectedSizes['bpc-157-tb-500']}</span>
-                </div>
-                <div className="mb-3">
-                  <label className="block text-xs text-gray-300 mb-1">Size</label>
-                  <select
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
-                    value={selectedSizes['bpc-157-tb-500']}
-                    onChange={(e) => setSize('bpc-157-tb-500', e.target.value)}
-                  >
-                    {productMap.get('bpc-157-tb-500')?.sizes.map((s) => (
-                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
-                  onClick={() => {
-                    const p = productMap.get('bpc-157-tb-500')
-                    const size = selectedSizes['bpc-157-tb-500']
-                    const price = priceFor('bpc-157-tb-500', size)
-                    addItem({ slug: 'bpc-157-tb-500', name: p?.name || 'BPC-157 & TB-500', size, price, image: p?.image, quantity: 1 })
-                    openCart()
-                  }}
-                >Add to Cart</button>
-                {/* Repeat the openCart() call after addItem for each product card's button */}
-              </div>
-            </div>
-
-            {/* GHK-Cu */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="relative h-64 bg-gray-900 p-4">
-                <Link href="/products/ghk">
-                  <img
-                    src={productMap.get('ghk')?.image || '/products/ghk cu 50mg.png'}
-                    alt="GHK-Cu Peptide"
-                    className="absolute inset-0 w-full h-full object-contain"
-                  />
-                </Link>
-              </div>
-              <div className="p-5">
-                <div className="flex flex-col mb-2">
-                  <Link href="/products/ghk" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">GHK-Cu</Link>
-                  <div className="mt-1.5">
-                    <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Copper Peptide</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-xs mb-3">Copper peptide complex for skin rejuvenation research applications.</p>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">${priceFor('ghk', selectedSizes['ghk']).toFixed(2)}</p>
-                  <span className="text-xs text-gray-400">{selectedSizes['ghk']}</span>
-                </div>
-                <div className="mb-3">
-                  <label className="block text-xs text-gray-300 mb-1">Size</label>
-                  <select
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
-                    value={selectedSizes['ghk']}
-                    onChange={(e) => setSize('ghk', e.target.value)}
-                  >
-                    {productMap.get('ghk')?.sizes.map((s) => (
-                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
-                  onClick={() => {
-                    const p = productMap.get('ghk')
-                    const size = selectedSizes['ghk']
-                    const price = priceFor('ghk', size)
-                    addItem({ slug: 'ghk', name: p?.name || 'GHK-Cu', size, price, image: p?.image, quantity: 1 })
-                    openCart()
-                  }}
-                >Add to Cart</button>
-              </div>
-            </div>
-
-            {/* Tirzepatide */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <Link href="/products/triz">
-                <div
-                  className="relative h-64 bg-gray-900"
-                  style={{
-                    backgroundImage: `url('${productMap.get('triz')?.image || '/products/tirz 15mg.png'}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                  }}
-                  aria-label="Tirzepatide Peptide"
-                />
-              </Link>
-              <div className="p-5">
-                <div className="flex flex-col mb-2">
-                  <Link href="/products/triz" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">Tirzepatide</Link>
-                  <div className="mt-1.5">
-                    <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">GIP/GLP-1</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-xs mb-3">Dual GIP and GLP-1 receptor agonist for metabolic research.</p>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">${priceFor('triz', selectedSizes['triz']).toFixed(2)}</p>
-                  <span className="text-xs text-gray-400">{selectedSizes['triz']}</span>
-                </div>
-                <div className="mb-3">
-                  <label className="block text-xs text-gray-300 mb-1">Size</label>
-                  <select
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
-                    value={selectedSizes['triz']}
-                    onChange={(e) => setSize('triz', e.target.value)}
-                  >
-                    {productMap.get('triz')?.sizes.map((s) => (
-                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
-                  onClick={() => {
-                    const p = productMap.get('triz')
-                    const size = selectedSizes['triz']
-                    const price = priceFor('triz', size)
-                    addItem({ slug: 'triz', name: p?.name || 'Tirzepatide', size, price, image: p?.image, quantity: 1 })
-                    openCart()
-                  }}
-                >Add to Cart</button>
-              </div>
-            </div>
-
-            {/* MOTS-c */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <Link href="/products/mots-c">
-                <div
-                  className="relative h-64 bg-gray-900"
-                  style={{
-                    backgroundImage: `url('${productMap.get('mots-c')?.image || '/products/Mots c 10mg bottle.png'}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                  }}
-                  aria-label="MOTS-c Peptide"
-                />
-              </Link>
-              <div className="p-5">
-                <div className="flex flex-col mb-2">
-                  <Link href="/products/mots-c" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">MOTS-c</Link>
-                  <div className="mt-1.5">
-                    <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Mitochondrial</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-xs mb-3">Mitochondrial-derived peptide for metabolic function research.</p>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">${priceFor('mots-c', selectedSizes['mots-c']).toFixed(2)}</p>
-                  <span className="text-xs text-gray-400">{selectedSizes['mots-c']}</span>
-                </div>
-                <div className="mb-3">
-                  <label className="block text-xs text-gray-300 mb-1">Size</label>
-                  <select
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
-                    value={selectedSizes['mots-c']}
-                    onChange={(e) => setSize('mots-c', e.target.value)}
-                  >
-                    {productMap.get('mots-c')?.sizes.map((s) => (
-                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
-                  onClick={() => {
-                    const p = productMap.get('mots-c')
-                    const size = selectedSizes['mots-c']
-                    const price = priceFor('mots-c', size)
-                    addItem({ slug: 'mots-c', name: p?.name || 'MOTS-c', size, price, image: p?.image, quantity: 1 })
-                    openCart()
-                  }}
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-
-            {/* Melanotan II */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <Link href="/products/melanotan-ii">
-                <div
-                  className="relative h-64 bg-gray-900"
-                  style={{
-                    backgroundImage: `url('${productMap.get('melanotan-ii')?.image || '/products/Melanotan II 10mg bottle.png'}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                  }}
-                  aria-label="Melanotan II Peptide"
-                />
-              </Link>
-              <div className="p-5">
-                <div className="flex flex-col mb-2">
-                  <Link href="/products/melanotan-ii" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">Melanotan II</Link>
-                  <div className="mt-1.5">
-                    <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Melanocortin</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-xs mb-3">Synthetic analog of alpha-melanocyte stimulating hormone for research.</p>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">${priceFor('melanotan-ii', selectedSizes['melanotan-ii']).toFixed(2)}</p>
-                  <span className="text-xs text-gray-400">{selectedSizes['melanotan-ii']}</span>
-                </div>
-                <div className="mb-3">
-                  <label className="block text-xs text-gray-300 mb-1">Size</label>
-                  <select
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
-                    value={selectedSizes['melanotan-ii']}
-                    onChange={(e) => setSize('melanotan-ii', e.target.value)}
-                  >
-                    {productMap.get('melanotan-ii')?.sizes.map((s) => (
-                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
-                  onClick={() => {
-                    const p = productMap.get('melanotan-ii')
-                    const size = selectedSizes['melanotan-ii']
-                    const price = priceFor('melanotan-ii', size)
-                    addItem({ slug: 'melanotan-ii', name: p?.name || 'Melanotan II', size, price, image: p?.image, quantity: 1 })
-                    openCart()
-                  }}
-                >Add to Cart</button>
-              </div>
-            </div>
-
-            {/* NAD+ */}
-            <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <Link href="/products/nad">
-                <div
-                  className="relative h-64 bg-gray-900"
-                  style={{
-                    backgroundImage: `url('${productMap.get('nad')?.image || '/products/nad+ 100mg.png'}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'contain'
-                  }}
-                  aria-label="NAD+ Supplement"
-                />
-              </Link>
-              <div className="p-5">
-                <div className="flex flex-col mb-2">
-                  <Link href="/products/nad" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">NAD+</Link>
-                  <div className="mt-1.5">
-                    <span className="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-xs inline-block">Coenzyme</span>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-xs mb-3">Nicotinamide adenine dinucleotide for cellular energy research.</p>
-                <div className="flex justify-between items-center mb-3">
-                  <p className="text-blue-400 font-bold text-sm">${priceFor('nad', selectedSizes['nad']).toFixed(2)}</p>
-                  <span className="text-xs text-gray-400">{selectedSizes['nad']}</span>
-                </div>
-                <div className="mb-3">
-                  <label className="block text-xs text-gray-300 mb-1">Size</label>
-                  <select
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs"
-                    value={selectedSizes['nad']}
-                    onChange={(e) => setSize('nad', e.target.value)}
-                  >
-                    {productMap.get('nad')?.sizes.map((s) => (
-                      <option key={s.size} value={s.size}>{s.size} — ${s.price.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded py-2"
-                  onClick={() => {
-                    const p = productMap.get('nad')
-                    const size = selectedSizes['nad']
-                    const price = priceFor('nad', size)
-                    addItem({ slug: 'nad', name: p?.name || 'NAD+', size, price, image: p?.image, quantity: 1 })
-                    openCart()
-                  }}
-                >Add to Cart</button>
-              </div>
-            </div>
-            
-            {/* Removed placeholder empty product card */}
-          </div>
-        </div>
+      <section id="products" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white scroll-mt-24">
+        <ProductGrid />
       </section>
       
       {/* Research & Education Section */}
@@ -917,6 +590,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      
+      {/* Slide Out Cart */}
+      <SlideOutCart />
     </>
   );
 }
