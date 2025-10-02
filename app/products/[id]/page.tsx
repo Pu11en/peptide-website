@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,6 +25,7 @@ function imageForSlug(slug: string): string | undefined {
   }
 }
 
+
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const id = use(params).id
   const product = products.find((p) => p.id === id)
@@ -49,18 +50,16 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       <div className="container mx-auto px-4 py-10">
         <Link href="/" className="inline-block mb-6 text-blue-400 hover:text-blue-300">← Home</Link>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-800 rounded-lg p-6 border border-blue-900/40">
-          <div className="relative h-80 bg-gray-900 rounded">
-            {defaultImage && (
-              <Image
-                src={defaultImage}
-                alt={product.name}
-                fill
-                className="object-contain"
-                sizes="(min-width: 768px) 50vw, 100vw"
-                priority={false}
-              />
-            )}
-          </div>
+          <div
+            className="relative h-80 bg-gray-900 rounded"
+            style={{
+              backgroundImage: defaultImage ? `url('${defaultImage}')` : undefined,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundSize: 'contain'
+            }}
+            aria-label={product.name}
+          />
           <div>
             <h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
             <p className="text-gray-300 text-sm mb-4">{product.description}</p>
@@ -111,5 +110,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
-    )
+    </div>
+  )
 }

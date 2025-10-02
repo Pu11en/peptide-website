@@ -229,18 +229,18 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* BPC-157 & TB-500 */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="relative h-64 bg-gray-900 p-4">
-                <Link href="/products/bpc-157-tb-500">
-                  <Image
-                    src="/products/bpc-157-tb500-10mg.png"
-                    alt="BPC-157 & TB-500 Blend"
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    priority={false}
-                  />
-                </Link>
-              </div>
+              <Link href="/products/bpc-157-tb-500">
+                <div
+                  className="relative h-64 bg-gray-900"
+                  style={{
+                    backgroundImage: "url('/products/bpc-157-tb500-10mg.png')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain'
+                  }}
+                  aria-label="BPC-157 & TB-500 Blend"
+                />
+              </Link>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
                   <Link href="/products/bpc-157-tb-500" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">BPC-157 & TB-500</Link>
@@ -283,13 +283,10 @@ export default function Home() {
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/ghk">
-                  <Image
+                  <img
                     src="/products/ghk-cu-100mg-bottle.png"
                     alt="GHK-Cu Peptide"
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    priority={false}
+                    className="absolute inset-0 w-full h-full object-contain"
                   />
                 </Link>
               </div>
@@ -332,18 +329,18 @@ export default function Home() {
 
             {/* Tirzepatide */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="relative h-64 bg-gray-900 p-4">
-                <Link href="/products/triz">
-                  <Image
-                    src="/products/tirzepatide-10mg-bottle.png"
-                    alt="Tirzepatide Peptide"
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    priority={false}
-                  />
-                </Link>
-              </div>
+              <Link href="/products/triz">
+                <div
+                  className="relative h-64 bg-gray-900"
+                  style={{
+                    backgroundImage: "url('/products/tirzepatide-10mg-bottle.png')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain'
+                  }}
+                  aria-label="Tirzepatide Peptide"
+                />
+              </Link>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
                   <Link href="/products/triz" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">Tirzepatide</Link>
@@ -383,18 +380,18 @@ export default function Home() {
 
             {/* MOTS-c */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="relative h-64 bg-gray-900 p-4">
-                <Link href="/products/mots-c">
-                  <Image
-                    src="/products/mots-c-10mg-bottle.png"
-                    alt="MOTS-c Peptide"
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    priority={false}
-                  />
-                </Link>
-              </div>
+              <Link href="/products/mots-c">
+                <div
+                  className="relative h-64 bg-gray-900"
+                  style={{
+                    backgroundImage: "url('/products/mots-c-10mg-bottle.png')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain'
+                  }}
+                  aria-label="MOTS-c Peptide"
+                />
+              </Link>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
                   <Link href="/products/mots-c" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">MOTS-c</Link>
@@ -436,18 +433,18 @@ export default function Home() {
 
             {/* Melanotan II */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="relative h-64 bg-gray-900 p-4">
-                <Link href="/products/melanotan-ii">
-                  <Image
-                    src="/products/melanotan-ii-10mg-bottle.png"
-                    alt="Melanotan II Peptide"
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    priority={false}
-                  />
-                </Link>
-              </div>
+              <Link href="/products/melanotan-ii">
+                <div
+                  className="relative h-64 bg-gray-900"
+                  style={{
+                    backgroundImage: "url('/products/melanotan-ii-10mg-bottle.png')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain'
+                  }}
+                  aria-label="Melanotan II Peptide"
+                />
+              </Link>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
                   <Link href="/products/melanotan-ii" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">Melanotan II</Link>
@@ -487,18 +484,18 @@ export default function Home() {
 
             {/* NAD+ */}
             <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-blue-900/50 hover:border-blue-500 transition-all hover:shadow-blue-900/30 hover:shadow-lg">
-              <div className="relative h-64 bg-gray-900 p-4">
-                <Link href="/products/nad">
-                  <Image
-                    src="/products/nad-plus-500mg-bottle.png"
-                    alt="NAD+ Supplement"
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    priority={false}
-                  />
-                </Link>
-              </div>
+              <Link href="/products/nad">
+                <div
+                  className="relative h-64 bg-gray-900"
+                  style={{
+                    backgroundImage: "url('/products/nad-plus-500mg-bottle.png')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain'
+                  }}
+                  aria-label="NAD+ Supplement"
+                />
+              </Link>
               <div className="p-5">
                 <div className="flex flex-col mb-2">
                   <Link href="/products/nad" className="text-base font-semibold whitespace-nowrap hover:text-blue-300">NAD+</Link>

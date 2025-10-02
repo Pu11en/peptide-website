@@ -90,7 +90,7 @@ export const products: Product[] = [
     name: 'BPC-157 + TB-500',
     description: 'A research peptide blend being studied for its potential healing and recovery properties.',
     price: 100,
-    image: '/products/bpc-157-tb-500.png',
+    image: '/products/bpc-157-tb500-10mg.png',
     category: 'healing-recovery',
     sizes: [
       { size: '10mg', price: 100 },
@@ -102,7 +102,7 @@ export const products: Product[] = [
     name: 'GHK-Cu',
     description: 'A research peptide being studied for its potential skin rejuvenation and wound healing properties.',
     price: 50,
-    image: '/products/ghk.png',
+    image: '/products/ghk-cu-100mg-bottle.png',
     category: 'anti-aging',
     sizes: [
       { size: '50mg', price: 50 }
@@ -113,7 +113,7 @@ export const products: Product[] = [
     name: 'MOTS-C',
     description: 'A research peptide being studied for its potential effects on metabolic function and exercise performance.',
     price: 70,
-    image: '/products/mots-c.png',
+    image: '/products/mots-c-10mg-bottle.png',
     category: 'energy-metabolism',
     sizes: [
       { size: '10mg', price: 70 }
@@ -124,7 +124,7 @@ export const products: Product[] = [
     name: 'Melanotan II',
     description: 'A research peptide being studied for its potential effects on skin pigmentation and tanning.',
     price: 40,
-    image: '/products/melanotan-ii.png',
+    image: '/products/melanotan-ii-10mg-bottle.png',
     category: 'anti-aging',
     sizes: [
       { size: '10mg', price: 40 }
@@ -146,7 +146,7 @@ export const products: Product[] = [
     name: 'NAD+',
     description: 'A research compound being studied for its potential effects on cellular energy production and anti-aging properties.',
     price: 30,
-    image: '/products/nad.png',
+    image: '/products/nad-plus-500mg-bottle.png',
     category: 'anti-aging',
     sizes: [
       { size: '100mg', price: 30 }
