@@ -90,7 +90,7 @@ export const products: Product[] = [
     name: 'BPC-157 + TB-500',
     description: 'A research peptide blend being studied for its potential healing and recovery properties.',
     price: 100,
-    image: '/products/bpc-157-tb500-10mg.png',
+    image: '/products/bpc-157-tb500-10mg-new.png',
     category: 'healing-recovery',
     sizes: [
       { size: '10mg', price: 100 },

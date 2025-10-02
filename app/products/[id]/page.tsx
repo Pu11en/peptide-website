@@ -9,7 +9,7 @@ import { useCart } from '@/components/cart/CartContext'
 function imageForSlug(slug: string): string | undefined {
   switch (slug) {
     case 'bpc-157-tb-500':
-      return '/products/bpc-157-tb500-10mg.png'
+      return '/products/bpc-157-tb500-10mg-new.png'
     case 'ghk':
       return '/products/ghk-cu-100mg-bottle.png'
     case 'triz':

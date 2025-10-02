@@ -233,7 +233,7 @@ export default function Home() {
                 <div
                   className="relative h-64 bg-gray-900"
                   style={{
-                    backgroundImage: "url('/products/bpc-157-tb500-10mg.png')",
+                    backgroundImage: `url('${productMap.get('bpc-157-tb-500')?.image || '/products/bpc-157-tb500-10mg-new.png'}')`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
