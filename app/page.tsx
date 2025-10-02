@@ -240,7 +240,7 @@ export default function Home() {
                 <div
                   className="relative h-64 bg-gray-900"
                   style={{
-                    backgroundImage: `url('${productMap.get('bpc-157-tb-500')?.image || '/products/bpc-157-tb500-10mg-new.png'}')`,
+                    backgroundImage: `url('${productMap.get('bpc-157-tb-500')?.image || '/products/bpc 157 tb500 10mg.png'}')`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
@@ -291,7 +291,7 @@ export default function Home() {
               <div className="relative h-64 bg-gray-900 p-4">
                 <Link href="/products/ghk">
                   <img
-                    src="/products/ghk-cu-100mg-bottle.png"
+                    src={productMap.get('ghk')?.image || '/products/ghk cu 50mg.png'}
                     alt="GHK-Cu Peptide"
                     className="absolute inset-0 w-full h-full object-contain"
                   />
@@ -340,7 +340,7 @@ export default function Home() {
                 <div
                   className="relative h-64 bg-gray-900"
                   style={{
-                    backgroundImage: "url('/products/tirzepatide-10mg-bottle.png')",
+                    backgroundImage: `url('${productMap.get('triz')?.image || '/products/tirz 15mg.png'}')`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
@@ -391,7 +391,7 @@ export default function Home() {
                 <div
                   className="relative h-64 bg-gray-900"
                   style={{
-                    backgroundImage: "url('/products/mots-c-10mg-bottle.png')",
+                    backgroundImage: `url('${productMap.get('mots-c')?.image || '/products/Mots c 10mg bottle.png'}')`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
@@ -444,7 +444,7 @@ export default function Home() {
                 <div
                   className="relative h-64 bg-gray-900"
                   style={{
-                    backgroundImage: "url('/products/melanotan-ii-10mg-bottle.png')",
+                    backgroundImage: `url('${productMap.get('melanotan-ii')?.image || '/products/Melanotan II 10mg bottle.png'}')`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'
@@ -495,7 +495,7 @@ export default function Home() {
                 <div
                   className="relative h-64 bg-gray-900"
                   style={{
-                    backgroundImage: "url('/products/nad-plus-500mg-bottle.png')",
+                    backgroundImage: `url('${productMap.get('nad')?.image || '/products/nad+ 100mg.png'}')`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'contain'

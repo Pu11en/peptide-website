@@ -9,17 +9,25 @@ import { useCart } from '@/components/cart/CartContext'
 function imageForSlug(slug: string): string | undefined {
   switch (slug) {
     case 'bpc-157-tb-500':
-      return '/products/bpc-157-tb500-10mg-new.png'
+      return '/products/bpc 157 tb500 10mg.png'
     case 'ghk':
-      return '/products/ghk-cu-100mg-bottle-new.png'
+      return '/products/ghk cu 50mg.png'
     case 'triz':
-      return '/products/tirzepatide-10mg-bottle.png'
+      return '/products/tirz 15mg.png'
     case 'mots-c':
-      return '/products/mots-c-10mg-bottle.png'
+      return '/products/Mots c 10mg bottle.png'
     case 'melanotan-ii':
-      return '/products/melanotan-ii-10mg-bottle.png'
+      return '/products/Melanotan II 10mg bottle.png'
     case 'nad':
-      return '/products/nad-plus-500mg-bottle.png'
+      return '/products/nad+ 100mg.png'
+    case 'reta':
+      return '/products/reta 10mg bottle.png'
+    case 'hgh':
+      return '/products/retatruide 15mg.png'
+    case 'tesamorelin':
+      return '/products/tesamorlin 10mg bottle.png'
+    case 'igf-1':
+      return '/products/IGF1 lr3 1mg bottle.png'
     default:
       return undefined
   }
