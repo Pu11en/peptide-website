@@ -303,7 +303,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 text-xs">
-                &quot;The purity of these peptides is exceptional. Our research has benefited greatly from the consistency and quality of the products.&quot;
+                "The purity of these peptides is exceptional. Our research has benefited greatly from the consistency and quality of the products."
               </p>
             </div>
             
@@ -324,7 +324,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 text-xs">
-                &quot;Fast shipping and excellent customer service. The detailed COAs provided with each product give us confidence in our research protocols.&quot;
+                "Fast shipping and excellent customer service. The detailed COAs provided with each product give us confidence in our research protocols."
               </p>
             </div>
             
@@ -345,7 +345,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-700 text-xs">
-                &quot;We&apos;ve been using these peptides for over two years in our studies. The consistency between batches has been remarkable, which is crucial for our longitudinal research.&quot;
+                "We've been using these peptides for over two years in our studies. The consistency between batches has been remarkable, which is crucial for our longitudinal research."
               </p>
             </div>
           </div>
@@ -394,7 +394,7 @@ export default function Home() {
             
             {/* Peptides vs. Proteins */}
             <div className="mb-12">
-              <h3 className="text-2xl font-semibold mb-4 text-gray-900">Peptides vs. Proteins: What&apos;s the Difference?</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900">Peptides vs. Proteins: What's the Difference?</h3>
               <p className="text-sm text-gray-700 mb-4">
                 While both peptides and proteins are made of amino acids, the key difference lies in their size and complexity. Peptides are shorter chains (2–50 amino acids), whereas proteins are longer and often fold into complex three-dimensional structures. This distinction affects their biological functions and how they are used in research and medicine.
               </p>
@@ -443,7 +443,7 @@ export default function Home() {
             <div className="mb-12">
               <h3 className="text-2xl font-semibold mb-4 text-gray-900">FDA-Approved vs. Experimental Peptides</h3>
               <p className="text-sm text-gray-700 mb-4">
-                The FDA has approved certain peptides for specific medical uses, such as insulin analogs for diabetes and glucagon-like peptide-1 (GLP-1) agonists for metabolic disorders. However, many peptides available online are considered experimental and are not approved for human use outside of research settings. It&apos;s crucial to distinguish between regulated, prescription peptides and those intended solely for laboratory research.
+                The FDA has approved certain peptides for specific medical uses, such as insulin analogs for diabetes and glucagon-like peptide-1 (GLP-1) agonists for metabolic disorders. However, many peptides available online are considered experimental and are not approved for human use outside of research settings. It's crucial to distinguish between regulated, prescription peptides and those intended solely for laboratory research.
               </p>
             </div>
             
@@ -498,7 +498,7 @@ export default function Home() {
               </div>
               <div className="px-6 py-4">
                 <p className="text-xs text-gray-700">
-                  Only FDA-approved peptides are legal for human use with a prescription. Other peptides are sold for research purposes only and are not intended for human consumption. Always ensure you&apos;re purchasing from reputable suppliers who comply with all regulatory requirements.
+                  Only FDA-approved peptides are legal for human use with a prescription. Other peptides are sold for research purposes only and are not intended for human consumption. Always ensure you're purchasing from reputable suppliers who comply with all regulatory requirements.
                 </p>
               </div>
             </div>

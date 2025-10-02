@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { products } from '../../data/products'
 
-// GET /api/products – minimal, selective fields for performance
+// GET /api/products – return static product data
 export async function GET() {
-  const products = await prisma.product.findMany({
-    select: { id: true, slug: true, name: true, priceCents: true, imagePath: true }
-  })
-
-  return NextResponse.json({ products })
+  try {
+    // Return static product data instead of querying database
+    return NextResponse.json({ products })
+  } catch (error) {
+    console.error('Error loading products:', error)
+    // Return empty array as fallback
+    return NextResponse.json({ products: [] })
+  }
 }

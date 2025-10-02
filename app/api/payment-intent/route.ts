@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { z } from 'zod'
 import { withErrorHandling } from '@/lib/errorHandler'
 
-const stripeSecret = process.env.STRIPE_SECRET_KEY
+const stripeSecret = process.env.STRIPE_SECRET_KEY || process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
 const stripe = stripeSecret ? new Stripe(stripeSecret, { apiVersion: '2025-08-27.basil' }) : null
 
 const PaymentIntentSchema = z.object({
