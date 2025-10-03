@@ -30,7 +30,10 @@ export default function Home() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const mq = window.matchMedia('(max-width: 767px)');
-    const update = () => setIsMobile(mq.matches);
+    const update = () => {
+      console.log('Device detection:', mq.matches ? 'Mobile' : 'Desktop');
+      setIsMobile(mq.matches);
+    };
     update();
     mq.addEventListener('change', update);
     return () => mq.removeEventListener('change', update);
@@ -48,9 +51,32 @@ export default function Home() {
             muted
             loop
             playsInline
-            preload="none"
+            preload="metadata"
+            onLoadStart={() => console.log('Desktop video: Loading started')}
+            onCanPlay={() => console.log('Desktop video: Can play')}
+            onCanPlayThrough={() => console.log('Desktop video: Can play through')}
+            onError={(e) => console.error('Desktop video: Error loading', e)}
+            ref={(video) => {
+              if (video) {
+                // Force play after component mounts
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                  playPromise.catch(error => {
+                    console.log('Desktop video autoplay prevented:', error);
+                    // Add user interaction listener to enable play
+                    const enablePlay = () => {
+                      video.play().catch(e => console.error('Desktop video play failed:', e));
+                      document.removeEventListener('click', enablePlay);
+                      document.removeEventListener('touchstart', enablePlay);
+                    };
+                    document.addEventListener('click', enablePlay, { once: true });
+                    document.addEventListener('touchstart', enablePlay, { once: true });
+                  });
+                }
+              }
+            }}
           >
-            <source src="https://res.cloudinary.com/dmdjagtkx/video/upload/v1759408577/4fdd1c67-f89a-4766-964a-7ee2101630be_vfur0q.mp4" type="video/mp4" media="(min-width: 768px)" />
+            <source src="https://res.cloudinary.com/dmdjagtkx/video/upload/v1759408577/4fdd1c67-f89a-4766-964a-7ee2101630be_vfur0q.mp4" type="video/mp4" />
           </video>
         )}
         
@@ -63,6 +89,9 @@ export default function Home() {
             loop
             playsInline
             preload="none"
+            onLoadStart={() => console.log('Mobile video: Loading started')}
+            onCanPlay={() => console.log('Mobile video: Can play')}
+            onError={(e) => console.error('Mobile video: Error loading', e)}
           >
             <source src="https://res.cloudinary.com/dmdjagtkx/video/upload/v1758689443/social_defipullen_httpss.mj.run4owL1ng-Xks_website_lighting_hero_--a_5d363600-c6ef-4ebc-bd63-71ebde3c4da7_2_ptz2ph.mp4" type="video/mp4" media="(max-width: 767px)" />
           </video>
@@ -71,7 +100,7 @@ export default function Home() {
         {/* 3 Lines Menu Button in Top Right Corner */}
         <button
           onClick={toggleMenu}
-          className="absolute top-6 right-20 z-30 flex flex-col items-end focus:outline-none"
+          className="absolute top-6 right-6 z-30 flex flex-col items-end focus:outline-none"
           aria-label="Toggle navigation menu"
         >
           <div className={`w-8 h-0.5 bg-white mb-2 transition-transform duration-300 ${isMenuOpen ? 'transform rotate-45 translate-y-2.5' : ''}`}></div>
@@ -79,17 +108,6 @@ export default function Home() {
           <div className={`w-8 h-0.5 bg-white transition-transform duration-300 ${isMenuOpen ? 'transform -rotate-45 -translate-y-2.5' : ''}`}></div>
         </button>
 
-        {/* Cart Button */}
-        <button
-          onClick={openCart}
-          className="absolute top-6 right-6 z-30 bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition-colors"
-          aria-label="Open shopping cart"
-        >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        </button>
-        
         {/* Navigation Menu */}
         <div className={`fixed inset-0 bg-black/90 z-20 transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div className="flex flex-col items-center justify-center h-full text-white">
