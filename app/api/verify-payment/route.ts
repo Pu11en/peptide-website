@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { withErrorHandling } from '@/lib/errorHandler'
-import prisma from '@/lib/prisma'
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY
 const stripe = stripeSecret ? new Stripe(stripeSecret, { apiVersion: '2024-09-30.acacia' }) : null
