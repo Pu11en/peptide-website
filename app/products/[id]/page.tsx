@@ -74,7 +74,7 @@ export default function ProductDetailPage({
             className="relative h-80 bg-gray-900 rounded"
             style={{
               backgroundImage: defaultImage
-                ? `url('${defaultImage}')`
+                ? `url('${defaultImage.replace(/ /g, "%20")}')`
                 : undefined,
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",

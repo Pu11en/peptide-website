@@ -22,7 +22,7 @@ export default function ProductCard({
       {/* Product Image */}
       <div className="w-full h-48 flex items-center justify-center bg-gray-50">
         <img
-          src={product.image}
+          src={product.image.replace(/ /g, "%20")}
           alt={product.title}
           className="w-full h-full object-contain p-4"
         />

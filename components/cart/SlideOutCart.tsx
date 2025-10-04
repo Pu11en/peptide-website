@@ -77,8 +77,8 @@ export default function SlideOutCart() {
                   <div className="space-y-4">
                     {items.map((item) => (
                       <div key={`${item.slug}-${item.size ?? ''}`} className="flex gap-4 bg-gray-50 rounded-lg p-4">
-                        <img 
-                          src={item.image || '/products/placeholder.png'} 
+                        <img
+                          src={(item.image || '/products/placeholder.png').replace(/ /g, "%20")}
                           alt={item.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />
