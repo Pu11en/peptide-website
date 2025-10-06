@@ -21,7 +21,7 @@ function imageForSlug(slug: string): string | undefined {
     case "melanotan-ii":
       return "/products/Melanotan II 10mg bottle.png";
     case "nad":
-      return "/products/nad-100mg.png";
+      return "/products/nad-plus-500mg-bottle.png";
     case "reta":
       return "/products/reta 10mg bottle.png";
     case "tesamorelin":
@@ -88,10 +88,13 @@ export default function ProductDetailPage({
               backgroundSize: "contain",
             }}
             aria-label={product.name}
-            onError={(e) => {
-              console.error(`Failed to load background image: ${defaultImage}`);
-            }}
-          />
+          >
+            {product.id === 'nad' && (
+              <div style={{position: 'absolute', top: 0, left: 0, background: 'red', color: 'white', padding: '2px', fontSize: '10px', zIndex: 1000}}>
+                DEBUG: {defaultImage}
+              </div>
+            )}
+          </div>
           <div>
             <h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
             <p className="text-gray-300 text-sm mb-4">{product.description}</p>
