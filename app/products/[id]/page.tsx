@@ -21,7 +21,7 @@ function imageForSlug(slug: string): string | undefined {
     case "melanotan-ii":
       return "/products/Melanotan II 10mg bottle.png";
     case "nad":
-      return "/products/nad+ 100mg.png";
+      return "/products/nad-100mg.png";
     case "reta":
       return "/products/reta 10mg bottle.png";
     case "tesamorelin":

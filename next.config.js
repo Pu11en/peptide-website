@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 // Updated: 2025-10-02 to fix Vercel deployment
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   typescript: {
     ignoreBuildErrors: true,
   },

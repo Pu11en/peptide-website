@@ -23,7 +23,7 @@ export function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    try { Sentry.captureException(error) } catch {}
+    // Removed Sentry capture; keep graceful next() on error
     return NextResponse.next();
   }
 }

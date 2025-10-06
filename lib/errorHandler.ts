@@ -1,5 +1,3 @@
-import * as Sentry from '@sentry/nextjs'
-
 type Handler = (req: Request) => Promise<Response>
 
 export function withErrorHandling(handler: Handler): Handler {
@@ -8,9 +6,6 @@ export function withErrorHandling(handler: Handler): Handler {
       return await handler(req)
     } catch (error: any) {
       console.error('API route error', error)
-      try {
-        Sentry.captureException(error)
-      } catch {}
 
       const webhook = process.env.N8N_ERROR_WEBHOOK_URL
       if (webhook) {

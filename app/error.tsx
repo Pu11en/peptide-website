@@ -4,10 +4,6 @@ import * as Sentry from '@sentry/nextjs'
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
-    try {
-      Sentry.captureException(error)
-    } catch {}
-    // eslint-disable-next-line no-console
     console.error(error)
   }, [error])
 
