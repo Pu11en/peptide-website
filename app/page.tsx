@@ -237,8 +237,19 @@ export default function Home() {
       </section>
       
       {/* Research & Education Section */}
-      <section id="research" className="py-20 bg-gradient-to-b from-blue-900 to-gray-900 text-white">
-        <div className="container mx-auto px-4">
+      <section id="research" className="relative py-20 text-white">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/defipullen_httpss.mj.runbqegFTIoev8_An_architectural_environm_b5968b4d-49ac-483d-92ad-12dc057063fa_3.png"
+            alt="Research background"
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/90 to-gray-900/90"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Research & Education</h2>
           <p className="text-center text-gray-300 mb-12 max-w-2xl mx-auto text-sm">
             Stay informed with the latest peptide research and educational resources.
@@ -291,81 +302,6 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
-          </div>
-        </div>
-      </section>
-      
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Customer Testimonials</h2>
-          <p className="text-center text-gray-700 max-w-2xl mx-auto mb-12 text-sm">
-            See what researchers are saying about our peptide products
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Testimonial 1 */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                  DR
-                </div>
-                <div className="ml-3">
-                  <h4 className="text-sm font-semibold text-gray-900">Dr. Robert M.</h4>
-                  <p className="text-xs text-gray-500">Research Scientist</p>
-                </div>
-              </div>
-              <div className="mb-3">
-                <div className="flex text-yellow-400 text-xs">
-                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                </div>
-              </div>
-              <p className="text-gray-700 text-xs">
-                "The purity of these peptides is exceptional. Our research has benefited greatly from the consistency and quality of the products."
-              </p>
-            </div>
-            
-            {/* Testimonial 2 */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                  JL
-                </div>
-                <div className="ml-3">
-                  <h4 className="text-sm font-semibold text-gray-900">Dr. Jennifer L.</h4>
-                  <p className="text-xs text-gray-500">Biochemistry Lab Director</p>
-                </div>
-              </div>
-              <div className="mb-3">
-                <div className="flex text-yellow-400 text-xs">
-                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                </div>
-              </div>
-              <p className="text-gray-700 text-xs">
-                "Fast shipping and excellent customer service. The detailed COAs provided with each product give us confidence in our research protocols."
-              </p>
-            </div>
-            
-            {/* Testimonial 3 */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-              <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                  MT
-                </div>
-                <div className="ml-3">
-                  <h4 className="text-sm font-semibold text-gray-900">Dr. Michael T.</h4>
-                  <p className="text-xs text-gray-500">Research Institute Director</p>
-                </div>
-              </div>
-              <div className="mb-3">
-                <div className="flex text-yellow-400 text-xs">
-                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                </div>
-              </div>
-              <p className="text-gray-700 text-xs">
-                "We've been using these peptides for over two years in our studies. The consistency between batches has been remarkable, which is crucial for our longitudinal research."
-              </p>
-            </div>
           </div>
         </div>
       </section>
