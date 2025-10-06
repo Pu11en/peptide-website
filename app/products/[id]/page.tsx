@@ -26,6 +26,8 @@ function imageForSlug(slug: string): string | undefined {
       return "/products/tesamorlin 10mg bottle.png";
     case "igf-1":
       return "/products/IGF1 lr3 1mg bottle.png";
+    case "nad-plus":
+      return "/products/nad-100mg.png";
     default:
       return undefined;
   }
