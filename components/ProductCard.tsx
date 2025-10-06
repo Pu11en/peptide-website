@@ -21,6 +21,11 @@ export default function ProductCard({
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
       {/* Product Image */}
       <div className="w-full h-48 flex items-center justify-center bg-gray-50">
+        {product.id === 'nad-plus' && (
+          <div style={{position: 'absolute', top: 0, left: 0, background: 'red', color: 'white', padding: '2px', fontSize: '10px', zIndex: 1000}}>
+            NAD+: {product.image}
+          </div>
+        )}
         <img
           src={product.image}
           alt={product.title}
@@ -28,6 +33,10 @@ export default function ProductCard({
           onError={(e) => {
             console.error(`Failed to load image: ${product.image}`);
             console.error('Product ID:', product.id);
+            if (product.id === 'nad-plus') {
+              // Try the other NAD image as fallback
+              (e.target as HTMLImageElement).src = '/products/nad-plus-500mg-bottle.png';
+            }
           }}
         />
       </div>

@@ -88,7 +88,13 @@ export default function ProductDetailPage({
               backgroundSize: "contain",
             }}
             aria-label={product.name}
-          />
+          >
+            {product.id === 'nad-plus' && (
+              <div style={{position: 'absolute', top: 0, left: 0, background: 'red', color: 'white', padding: '2px', fontSize: '10px', zIndex: 1000}}>
+                NAD+: {defaultImage}
+              </div>
+            )}
+          </div>
           <div>
             <h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
             <p className="text-gray-300 text-sm mb-4">{product.description}</p>
