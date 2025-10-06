@@ -232,8 +232,21 @@ export default function Home() {
       </section>
       
       {/* Products Section */}
-      <section id="products" className="py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white scroll-mt-24">
-        <ProductGrid />
+      <section id="products" className="relative py-20 text-white scroll-mt-24">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/defipullen_httpss.mj.runD94ZuWzMOsU_website_hero_--raw_--oref_b6fe6208-70b5-4bd2-ae9e-015fcb3008fd_3.png"
+            alt="Products background"
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay for better content visibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/90 to-gray-800/90"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <ProductGrid />
+        </div>
       </section>
       
       {/* Research & Education Section */}
