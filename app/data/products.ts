@@ -135,7 +135,7 @@ export const products: Product[] = [
     name: 'NAD+',
     description: 'A research compound being studied for its potential effects on cellular energy production and anti-aging properties.',
     price: 30,
-    image: '/products/nad-100mg.png',
+    image: 'https://res.cloudinary.com/dmdjagtkx/image/upload/v1759719467/NAD_100mg_2_htiuny.jpg',
     category: 'anti-aging',
     sizes: [
       { size: '100mg', price: 30 }
