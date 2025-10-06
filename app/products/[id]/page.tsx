@@ -65,7 +65,6 @@ export default function ProductDetailPage({
     console.log('ProductDetail NAD+ product.image:', product.image);
     console.log('ProductDetail NAD+ imageForSlug:', imageForSlug(product.id));
     console.log('ProductDetail NAD+ defaultImage:', defaultImage);
-    console.log('ProductDetail NAD+ encoded:', encodeURIComponent(defaultImage));
   }
 
   return (
@@ -82,7 +81,7 @@ export default function ProductDetailPage({
             className="relative h-80 bg-gray-900 rounded"
             style={{
               backgroundImage: defaultImage
-                ? `url('${encodeURIComponent(defaultImage)}')`
+                ? `url('${defaultImage}')`
                 : undefined,
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
@@ -91,7 +90,6 @@ export default function ProductDetailPage({
             aria-label={product.name}
             onError={(e) => {
               console.error(`Failed to load background image: ${defaultImage}`);
-              console.error('Encoded path:', encodeURIComponent(defaultImage));
             }}
           />
           <div>
