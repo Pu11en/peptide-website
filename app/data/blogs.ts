@@ -14,7 +14,7 @@ export const blogs: Blog[] = [
     title: 'The Benefits of Peptide Therapy',
     description: 'Peptide therapy is a cutting-edge approach to health and wellness that utilizes specific amino acid sequences to target various bodily functions.',
     content: '<p>Peptide therapy is a cutting-edge approach to health and wellness that utilizes specific amino acid sequences to target various bodily functions. These small proteins can help with everything from weight management to muscle growth, skin health, and cognitive function.</p><p>Research has shown that peptides can be particularly effective for:</p><ul><li>Accelerating healing and recovery</li><li>Reducing inflammation</li><li>Boosting immune function</li><li>Enhancing hormone production</li><li>Improving sleep quality</li></ul><p>As we age, our natural peptide production decreases, which is why supplementation can be beneficial for maintaining optimal health and performance.</p>',
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=1160&auto=format&fit=crop',
+    image: '/images/d429586b-bf0a-484a-ae5f-bb8722228b61.png',
     date: '2024-07-24',
     url: '/blogs/blog-1'
   },
