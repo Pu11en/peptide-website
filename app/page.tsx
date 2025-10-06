@@ -250,7 +250,7 @@ export default function Home() {
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">Research & Education</h2>
+          <h2 className="text-3xl font-bold text-center mb-6 text-white">Research & Education</h2>
           <p className="text-center text-gray-300 mb-12 max-w-2xl mx-auto text-sm">
             Stay informed with the latest peptide research and educational resources.
           </p>

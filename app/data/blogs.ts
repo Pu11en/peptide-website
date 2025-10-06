@@ -22,7 +22,7 @@ export const blogs: Blog[] = [
     id: 'blog-2',
     title: 'Coming Soon',
     description: 'Our second blog post is coming soon. Stay tuned for the latest research and educational content on peptides.',
-    image: '/images/blog-placeholder.jpg',
+    image: '/images/Untitled design (44).png',
     date: '2023-12-01',
     url: '#'
   },
@@ -30,7 +30,7 @@ export const blogs: Blog[] = [
     id: 'blog-3',
     title: 'Coming Soon',
     description: 'Our third blog post is coming soon. Stay tuned for the latest research and educational content on peptides.',
-    image: '/images/blog-placeholder.jpg',
+    image: '/images/b69578d1-7d80-4aaa-a24c-6eaf81ee3c5d.png',
     date: '2023-12-01',
     url: '#'
   }
