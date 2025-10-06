@@ -21,7 +21,7 @@ function imageForSlug(slug: string): string | undefined {
     case "melanotan-ii":
       return "/products/Melanotan II 10mg bottle.png";
     case "nad":
-      return "/products/nad-plus-500mg-bottle.png";
+      return "/products/NAD+ 100mg (2).png";
     case "reta":
       return "/products/reta 10mg bottle.png";
     case "tesamorelin":
@@ -81,7 +81,7 @@ export default function ProductDetailPage({
             className="relative h-80 bg-gray-900 rounded"
             style={{
               backgroundImage: defaultImage
-                ? `url('${defaultImage}')`
+                ? `url('${product.id === 'nad' ? '/products/NAD%2B%20100mg%20(2).png' : defaultImage}')`
                 : undefined,
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",

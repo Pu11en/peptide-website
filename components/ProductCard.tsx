@@ -27,16 +27,12 @@ export default function ProductCard({
           </div>
         )}
         <img
-          src={product.image}
+          src={product.id === 'nad' ? '/products/NAD%2B%20100mg%20(2).png' : product.image}
           alt={product.title}
           className="w-full h-full object-contain p-4"
           onError={(e) => {
             console.error(`Failed to load image: ${product.image}`);
             console.error('Product ID:', product.id);
-            // Try alternative image on error
-            if (product.id === 'nad' && product.image === '/products/nad-100mg.png') {
-              (e.target as HTMLImageElement).src = '/products/nad-plus-500mg-bottle.png';
-            }
           }}
         />
       </div>
