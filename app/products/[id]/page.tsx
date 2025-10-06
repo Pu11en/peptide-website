@@ -59,6 +59,14 @@ export default function ProductDetailPage({
 
   const [defaultSize] = product.sizes;
   const defaultImage = imageForSlug(product.id) || product.image;
+  
+  // Debug log for NAD+ image
+  if (product.id === 'nad') {
+    console.log('ProductDetail NAD+ product.image:', product.image);
+    console.log('ProductDetail NAD+ imageForSlug:', imageForSlug(product.id));
+    console.log('ProductDetail NAD+ defaultImage:', defaultImage);
+    console.log('ProductDetail NAD+ encoded:', encodeURIComponent(defaultImage));
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
@@ -74,13 +82,17 @@ export default function ProductDetailPage({
             className="relative h-80 bg-gray-900 rounded"
             style={{
               backgroundImage: defaultImage
-                ? `url('${defaultImage.replace(/ /g, "%20")}')`
+                ? `url('${encodeURIComponent(defaultImage)}')`
                 : undefined,
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
               backgroundSize: "contain",
             }}
             aria-label={product.name}
+            onError={(e) => {
+              console.error(`Failed to load background image: ${defaultImage}`);
+              console.error('Encoded path:', encodeURIComponent(defaultImage));
+            }}
           />
           <div>
             <h1 className="text-2xl font-semibold mb-2">{product.name}</h1>
